@@ -130,6 +130,13 @@
       animation: blink 1s step-start infinite;
     }
 
+    /* Inline typing cursor for subtitle name */
+    .typing-cursor-pink::after {
+      content: '|';
+      color: #F472B6;
+      animation: blink 0.8s step-start infinite;
+    }
+
     @keyframes blink {
       50% {
         opacity: 0;
@@ -155,6 +162,12 @@
 
     .floating-badge-delayed {
       animation: float-gentle 4.5s ease-in-out infinite 1.5s;
+    }
+
+    /* Photo booth slot popover animation */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translate(-50%, 4px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
     }
   </style>
 </head>
@@ -218,8 +231,7 @@
             class="typing-cursor bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-pink-700 to-amber-700"></span>
         </h1>
         <p id="heroSubtitle" class="text-base sm:text-lg text-slate-600 max-w-xl mx-auto font-medium">
-          Selamat bertambah usia! Semoga langkahmu senantiasa dipenuhi keberkahan, kesehatan, dan senyum yang tak pernah
-          pudar.
+          Selamat bertambah usia yang ke-23 <span id="subtitleNameTyping" class="font-bold text-pink-600 typing-cursor-pink"></span>
         </p>
       </div>
 
@@ -243,7 +255,7 @@
               <div class="text-left text-white drop-shadow">
                 <p id="heroCelebrantNameCard" class="font-serif text-lg sm:text-xl font-bold leading-tight">Nabila
                   Auliana Sholiha</p>
-                <p id="heroBirthDateBadge" class="text-xs text-white/90 font-medium">Spesial Milad • 21 Oktober</p>
+                <!-- <p id="heroBirthDateBadge" class="text-xs text-white/90 font-medium">Spesial Milad • 21 Oktober</p> -->
               </div>
             </div>
           </div>
@@ -436,26 +448,19 @@
 
       <!-- Section Header -->
       <div class="text-center space-y-2">
-        <span
-          class="text-xs font-bold uppercase tracking-widest text-emerald-700 bg-emerald-100/70 px-3 py-1 rounded-full brutal-border">
-          Untaian Doa & Harapan
-        </span>
         <h2 class="text-2xl sm:text-4xl font-serif font-bold text-slate-900">
-          Harapan Terbaik untuk Langkah Mendatang
+          Untaian Doa & Harapan
         </h2>
-        <p class="text-sm sm:text-base text-slate-600 max-w-lg mx-auto">
-          Untaian doa dan harapan tulus yang disematkan untuk mengiringi setiap ikhtiar dan langkahmu ke depan.
-        </p>
       </div>
 
       <!-- Single Wide Glassmorphism Card Container -->
-      <div id="timeCapsuleGrid" class="max-w-2xl mx-auto w-full">
+      <div id="timeCapsuleGrid" class="w-full">
         <!-- Dynamically populated via birthdayData.timeCapsuleWishes -->
       </div>
     </section>
 
     <!-- ================================================================= -->
-    <!-- SECTION 7: VIRTUAL STICKY NOTES WALL (PAPAN DOA INTERAKTIF) -->
+    <!-- SECTION 7: VIRTUAL STICKY NOTES WALL (CATATAN DOA) -->
     <!-- ================================================================= -->
     <section id="section-sticky-wall" class="relative space-y-8 scroll-mt-24">
 
@@ -463,10 +468,10 @@
       <div class="text-center space-y-2">
         <span
           class="text-xs font-bold uppercase tracking-widest text-indigo-700 bg-indigo-100/70 px-3 py-1 rounded-full brutal-border">
-          Papan Doa Interaktif
+          Catatan Untuk Sebuah Do'a
         </span>
         <h2 class="text-2xl sm:text-4xl font-serif font-bold text-slate-900">
-          Virtual Sticky Notes Wall
+          Virtual Sticky   Notes Wall
         </h2>
         <p class="text-sm sm:text-base text-slate-600 max-w-lg mx-auto">
           Tuliskan doa, pesan hangat, atau ucapan selamat ulang tahunmu. Pesan akan tertempel di dinding ini dan
@@ -563,9 +568,200 @@
           <!-- Dynamically inserted sticky notes -->
         </div>
       </div>
+
+    <!-- ================================================================= -->
+    <!-- SECTION: PHOTO BOOTH                                               -->
+    <!-- ================================================================= -->
+    <section id="section-photo-booth" class="relative space-y-8 scroll-mt-24">
+
+      <!-- Section Header -->
+      <div class="text-center space-y-3">
+        <span class="text-xs font-bold uppercase tracking-widest text-pink-700 bg-pink-100/70 px-3 py-1 rounded-full brutal-border">
+          📸 Bingkai Kenangan
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-serif font-bold text-slate-900">
+          Virtual Photo Booth
+        </h2>
+        <p class="text-sm sm:text-base text-slate-600 max-w-lg mx-auto">
+          Pilih template, isi 3 slot foto, lalu download hasilnya sebagai foto kenangan!
+        </p>
+      </div>
+
+      <!-- Template Picker -->
+      <div class="glass-card brutal-border rounded-3xl p-6 sm:p-8 shadow-brutal bg-white/85">
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-4">1. Pilih Template Bingkai</p>
+        <div class="grid grid-cols-3 gap-3 sm:gap-4" id="pb-template-picker">
+
+          <!-- Template 1: Colour Light -->
+          <button id="pb-tpl-1" onclick="selectPhotoBoothTemplate(1)" class="pb-tpl-btn group relative rounded-2xl overflow-hidden brutal-border shadow-brutal-sm hover:shadow-brutal transition-all duration-200 hover:-translate-y-1 aspect-[2/3] flex flex-col gap-[5px] items-center justify-center p-2.5" style="background:linear-gradient(145deg,#FFF5F7,#FDE8EF,#F9E4F1)">
+            <div class="w-full flex-1 rounded-lg bg-white/60 border border-pink-200/80 shadow-sm"></div>
+            <div class="w-full flex-1 rounded-lg bg-white/60 border border-pink-200/80 shadow-sm"></div>
+            <div class="w-full flex-1 rounded-lg bg-white/60 border border-pink-200/80 shadow-sm"></div>
+            <span class="absolute bottom-1.5 left-0 right-0 text-center">
+              <span class="text-[8px] font-extrabold tracking-widest text-pink-600/80 uppercase">Colour Light</span>
+            </span>
+            <!-- Decorative dots -->
+            <div class="absolute top-1 right-1 flex gap-0.5"><span class="w-1 h-1 rounded-full bg-pink-300/60"></span><span class="w-1 h-1 rounded-full bg-rose-300/60"></span></div>
+          </button>
+
+          <!-- Template 2: Classic with Flower -->
+          <button id="pb-tpl-2" onclick="selectPhotoBoothTemplate(2)" class="pb-tpl-btn group relative rounded-2xl overflow-hidden brutal-border shadow-brutal-sm hover:shadow-brutal transition-all duration-200 hover:-translate-y-1 aspect-[2/3] flex flex-col gap-[5px] items-center justify-center p-2.5" style="background:linear-gradient(145deg,#FFFCF0,#FFF5E6,#FEF0DB)">
+            <div class="w-full flex-1 rounded-lg bg-white/50 shadow-sm" style="border:1.5px solid rgba(180,140,90,0.25)"></div>
+            <div class="w-full flex-1 rounded-lg bg-white/50 shadow-sm" style="border:1.5px solid rgba(180,140,90,0.25)"></div>
+            <div class="w-full flex-1 rounded-lg bg-white/50 shadow-sm" style="border:1.5px solid rgba(180,140,90,0.25)"></div>
+            <span class="absolute bottom-1.5 left-0 right-0 text-center">
+              <span class="text-[8px] font-extrabold tracking-widest uppercase" style="color:#A67B4A">Classic Floral</span>
+            </span>
+            <!-- Flower decorations -->
+            <div class="absolute top-0.5 left-0.5 text-[8px] opacity-60">🌸</div>
+            <div class="absolute bottom-5 right-0.5 text-[8px] opacity-60">🌿</div>
+          </button>
+
+          <!-- Template 3: Glazy Dark / Elegant -->
+          <button id="pb-tpl-3" onclick="selectPhotoBoothTemplate(3)" class="pb-tpl-btn group relative rounded-2xl overflow-hidden shadow-brutal-sm hover:shadow-brutal transition-all duration-200 hover:-translate-y-1 aspect-[2/3] flex flex-col gap-[5px] items-center justify-center p-2.5" style="background:linear-gradient(145deg,#1A1A2E,#16213E,#0F3460); border:2px solid rgba(212,175,55,0.35)">
+            <div class="w-full flex-1 rounded-lg shadow-sm" style="background:rgba(255,255,255,0.08); border:1px solid rgba(212,175,55,0.25)"></div>
+            <div class="w-full flex-1 rounded-lg shadow-sm" style="background:rgba(255,255,255,0.08); border:1px solid rgba(212,175,55,0.25)"></div>
+            <div class="w-full flex-1 rounded-lg shadow-sm" style="background:rgba(255,255,255,0.08); border:1px solid rgba(212,175,55,0.25)"></div>
+            <span class="absolute bottom-1.5 left-0 right-0 text-center">
+              <span class="text-[8px] font-extrabold tracking-widest uppercase" style="color:#D4AF37">Dark Elegant</span>
+            </span>
+            <!-- Sparkle decorations -->
+            <div class="absolute top-1.5 right-2 text-[6px]" style="color:#D4AF37">✦</div>
+            <div class="absolute top-3 left-1.5 text-[5px]" style="color:#D4AF37; opacity:0.6">✧</div>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- Photo Slot Upload Area -->
+      <div class="glass-card brutal-border rounded-3xl p-6 sm:p-8 shadow-brutal bg-white/85">
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-5">2. Isi 3 Slot Foto</p>
+
+        <div id="pb-slots-container" class="grid grid-cols-3 gap-3 sm:gap-5 mb-6">
+          <!-- Slot 1 -->
+          <div class="pb-slot-wrapper relative" data-slot="0">
+            <div id="pb-slot-0" onclick="toggleSlotMenu(0)" class="pb-slot aspect-[3/4] rounded-2xl brutal-border border-dashed bg-slate-50/80 hover:bg-pink-50/50 flex flex-col items-center justify-center cursor-pointer transition-all hover:border-pink-300 hover:-translate-y-0.5 hover:shadow-brutal-sm group relative overflow-hidden">
+              <div class="pb-slot-placeholder flex flex-col items-center gap-2 pointer-events-none">
+                <div class="w-12 h-12 rounded-full bg-pink-100/70 flex items-center justify-center">
+                  <span class="text-xl opacity-50 group-hover:opacity-80 transition-opacity">📷</span>
+                </div>
+                <span class="text-[10px] font-bold text-slate-400 group-hover:text-pink-500 transition-colors">Tap untuk isi</span>
+                <span class="text-[9px] text-slate-300">Foto 1</span>
+              </div>
+              <img id="pb-img-0" class="absolute inset-0 w-full h-full object-cover rounded-2xl hidden" src="" alt="Foto 1">
+              <button id="pb-remove-0" onclick="removePhotoBoothSlot(event, 0)" class="absolute top-2 right-2 w-7 h-7 bg-red-500/90 backdrop-blur text-white rounded-full text-xs hidden items-center justify-center shadow-lg hover:bg-red-600 z-20 transition-transform hover:scale-110">✕</button>
+            </div>
+            <!-- Popover Menu -->
+            <div id="pb-menu-0" class="pb-slot-menu absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-44 bg-white brutal-border rounded-2xl shadow-brutal-lg p-2 z-30 hidden transition-all animate-[fadeUp_0.15s_ease-out]">
+              <label class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-pink-50 cursor-pointer transition-colors group/item">
+                <span class="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center text-sm group-hover/item:bg-pink-200 transition-colors">📁</span>
+                <span class="text-xs font-bold text-slate-700">Upload Foto</span>
+                <input type="file" accept="image/*" class="sr-only" onchange="handlePhotoBoothUpload(event, 0)">
+              </label>
+              <label class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-indigo-50 cursor-pointer transition-colors group/item" onclick="openCamera(0)">
+                <span class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center text-sm group-hover/item:bg-indigo-200 transition-colors">📷</span>
+                <span class="text-xs font-bold text-slate-700">Gunakan Kamera</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Slot 2 -->
+          <div class="pb-slot-wrapper relative" data-slot="1">
+            <div id="pb-slot-1" onclick="toggleSlotMenu(1)" class="pb-slot aspect-[3/4] rounded-2xl brutal-border border-dashed bg-slate-50/80 hover:bg-pink-50/50 flex flex-col items-center justify-center cursor-pointer transition-all hover:border-pink-300 hover:-translate-y-0.5 hover:shadow-brutal-sm group relative overflow-hidden">
+              <div class="pb-slot-placeholder flex flex-col items-center gap-2 pointer-events-none">
+                <div class="w-12 h-12 rounded-full bg-violet-100/70 flex items-center justify-center">
+                  <span class="text-xl opacity-50 group-hover:opacity-80 transition-opacity">📷</span>
+                </div>
+                <span class="text-[10px] font-bold text-slate-400 group-hover:text-violet-500 transition-colors">Tap untuk isi</span>
+                <span class="text-[9px] text-slate-300">Foto 2</span>
+              </div>
+              <img id="pb-img-1" class="absolute inset-0 w-full h-full object-cover rounded-2xl hidden" src="" alt="Foto 2">
+              <button id="pb-remove-1" onclick="removePhotoBoothSlot(event, 1)" class="absolute top-2 right-2 w-7 h-7 bg-red-500/90 backdrop-blur text-white rounded-full text-xs hidden items-center justify-center shadow-lg hover:bg-red-600 z-20 transition-transform hover:scale-110">✕</button>
+            </div>
+            <div id="pb-menu-1" class="pb-slot-menu absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-44 bg-white brutal-border rounded-2xl shadow-brutal-lg p-2 z-30 hidden transition-all animate-[fadeUp_0.15s_ease-out]">
+              <label class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-pink-50 cursor-pointer transition-colors group/item">
+                <span class="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center text-sm group-hover/item:bg-pink-200 transition-colors">📁</span>
+                <span class="text-xs font-bold text-slate-700">Upload Foto</span>
+                <input type="file" accept="image/*" class="sr-only" onchange="handlePhotoBoothUpload(event, 1)">
+              </label>
+              <label class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-indigo-50 cursor-pointer transition-colors group/item" onclick="openCamera(1)">
+                <span class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center text-sm group-hover/item:bg-indigo-200 transition-colors">📷</span>
+                <span class="text-xs font-bold text-slate-700">Gunakan Kamera</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Slot 3 -->
+          <div class="pb-slot-wrapper relative" data-slot="2">
+            <div id="pb-slot-2" onclick="toggleSlotMenu(2)" class="pb-slot aspect-[3/4] rounded-2xl brutal-border border-dashed bg-slate-50/80 hover:bg-pink-50/50 flex flex-col items-center justify-center cursor-pointer transition-all hover:border-pink-300 hover:-translate-y-0.5 hover:shadow-brutal-sm group relative overflow-hidden">
+              <div class="pb-slot-placeholder flex flex-col items-center gap-2 pointer-events-none">
+                <div class="w-12 h-12 rounded-full bg-amber-100/70 flex items-center justify-center">
+                  <span class="text-xl opacity-50 group-hover:opacity-80 transition-opacity">📷</span>
+                </div>
+                <span class="text-[10px] font-bold text-slate-400 group-hover:text-amber-500 transition-colors">Tap untuk isi</span>
+                <span class="text-[9px] text-slate-300">Foto 3</span>
+              </div>
+              <img id="pb-img-2" class="absolute inset-0 w-full h-full object-cover rounded-2xl hidden" src="" alt="Foto 3">
+              <button id="pb-remove-2" onclick="removePhotoBoothSlot(event, 2)" class="absolute top-2 right-2 w-7 h-7 bg-red-500/90 backdrop-blur text-white rounded-full text-xs hidden items-center justify-center shadow-lg hover:bg-red-600 z-20 transition-transform hover:scale-110">✕</button>
+            </div>
+            <div id="pb-menu-2" class="pb-slot-menu absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-44 bg-white brutal-border rounded-2xl shadow-brutal-lg p-2 z-30 hidden transition-all animate-[fadeUp_0.15s_ease-out]">
+              <label class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-pink-50 cursor-pointer transition-colors group/item">
+                <span class="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center text-sm group-hover/item:bg-pink-200 transition-colors">📁</span>
+                <span class="text-xs font-bold text-slate-700">Upload Foto</span>
+                <input type="file" accept="image/*" class="sr-only" onchange="handlePhotoBoothUpload(event, 2)">
+              </label>
+              <label class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-indigo-50 cursor-pointer transition-colors group/item" onclick="openCamera(2)">
+                <span class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center text-sm group-hover/item:bg-indigo-200 transition-colors">📷</span>
+                <span class="text-xs font-bold text-slate-700">Gunakan Kamera</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Generate & Download -->
+        <div class="flex flex-col sm:flex-row items-center gap-3 pt-4 border-t border-slate-100">
+          <div class="text-xs text-slate-400 flex-1 hidden sm:block">Isi minimal 1 foto untuk generate bingkai</div>
+          <button onclick="generatePhotoBooth()" id="pb-generate-btn"
+            class="w-full sm:w-auto px-6 py-3 rounded-full bg-gradient-to-r from-pink-500 to-violet-500 text-white font-bold text-sm tracking-wide shadow-brutal brutal-border hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2">
+            <span>✨</span> <span>Generate & Preview</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Canvas Preview & Download -->
+      <div id="pb-preview-section" class="hidden glass-card brutal-border rounded-3xl p-6 sm:p-8 shadow-brutal bg-white/85 flex flex-col items-center gap-5">
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-500 self-start">3. Preview & Download</p>
+        <canvas id="pb-canvas" class="rounded-2xl brutal-border shadow-brutal-sm max-w-full" style="max-height: 70vh;"></canvas>
+        <button onclick="downloadPhotoBooth()" id="pb-download-btn"
+          class="px-8 py-3.5 rounded-full bg-slate-900 text-white font-bold text-sm tracking-wide shadow-brutal brutal-border hover:bg-slate-800 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-2">
+          <span>⬇️</span> <span>Download Foto Kenangan</span>
+        </button>
+      </div>
+
     </section>
 
+    <!-- ================================================================= -->
+    <!-- CAMERA MODAL                                                        -->
+    <!-- ================================================================= -->
+    <div id="pb-camera-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+      <div class="bg-white rounded-3xl p-5 sm:p-7 shadow-2xl max-w-sm w-full flex flex-col gap-4 brutal-border">
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-slate-800 flex items-center gap-2"><span>📷</span> Ambil Foto</h3>
+          <button onclick="closeCamera()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-red-100 text-slate-600 hover:text-red-500 flex items-center justify-center font-bold transition-colors brutal-border text-sm">✕</button>
+        </div>
+        <video id="pb-camera-video" autoplay playsinline class="w-full rounded-2xl brutal-border object-cover aspect-[3/4] bg-black"></video>
+        <div class="flex gap-2">
+          <button onclick="closeCamera()" class="flex-1 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs brutal-border transition-colors">Batal</button>
+          <button onclick="captureFromCamera()" class="flex-[2] py-2.5 rounded-full bg-pink-500 hover:bg-pink-600 text-white font-bold text-xs shadow-brutal brutal-border hover:-translate-y-0.5 transition-all flex items-center justify-center gap-1.5">
+            <span>📸</span> Ambil Foto
+          </button>
+        </div>
+        <canvas id="pb-camera-canvas" class="hidden"></canvas>
+      </div>
+    </div>
+
   </main>
+
 
   <!-- ================================================================= -->
   <!-- FOOTER -->
@@ -602,7 +798,7 @@
 
       // Hero Section
       heroGreeting: "Barakallah Fii Umrik ✨",
-      heroSubtitle: "Selamat bertambah usia yang ke-23 untuk Nabila Auliana Sholiha!",
+      heroSubtitle: "Selamat bertambah usia yang ke-23 Nabila Auliana Sholiha!",
       heroBadgeText: "Celebrating 23 Years (276 Months) of Life & Joy ✨",
       heroImage: "assets/foto-asli.jpg",
 
@@ -659,9 +855,9 @@
 
       // Hero
       document.getElementById("heroAgeBadge").textContent = birthdayData.heroBadgeText;
-      document.getElementById("heroSubtitle").textContent = birthdayData.heroSubtitle;
+      // Subtitle name typing is handled by initSubtitleNameTyping() below
       document.getElementById("heroCelebrantNameCard").textContent = birthdayData.name;
-      document.getElementById("heroBirthDateBadge").textContent = `Spesial Milad • ${birthdayData.birthDate}`;
+      // document.getElementById("heroBirthDateBadge").textContent = `Spesial Milad • ${birthdayData.birthDate}`;
       document.getElementById("heroAgeNumber").textContent = `${birthdayData.age} Tahun`;
       document.getElementById("heroImageSrc").src = birthdayData.heroImage;
 
@@ -700,6 +896,73 @@
       }
 
       type();
+
+      // After heading finishes, start subtitle name typo animation
+      const headingDuration = fullText.length * 110 + 2200;
+      setTimeout(initSubtitleNameTyping, headingDuration);
+    }
+
+    function initSubtitleNameTyping() {
+      const el = document.getElementById('subtitleNameTyping');
+      if (!el) return;
+
+      // Sequence: [text, pauseAfterMs, isWrong]
+      const sequence = [
+        { text: 'Nabilah',              pauseAfterMs: 600,  wrong: true  },
+        { text: 'Nabilaaah',            pauseAfterMs: 700,  wrong: true  },
+        { text: 'Nabila Auliana Sholiha!', pauseAfterMs: 0, wrong: false },
+      ];
+
+      const TYPE_SPEED  = 80;  // ms per char when typing
+      const DEL_SPEED   = 45;  // ms per char when deleting
+
+      let stepIdx = 0;
+
+      function runStep() {
+        if (stepIdx >= sequence.length) return;
+        const { text, pauseAfterMs, wrong } = sequence[stepIdx];
+
+        // Style: red tint while wrong, pink when correct
+        el.className = wrong
+          ? 'font-bold text-red-400 typing-cursor-pink'
+          : 'font-bold text-pink-600';
+
+        let charPos = 0;
+
+        // --- Type the text ---
+        function typeChar() {
+          if (charPos <= text.length) {
+            el.textContent = text.substring(0, charPos);
+            charPos++;
+            setTimeout(typeChar, TYPE_SPEED);
+          } else {
+            // Fully typed — pause, then decide
+            if (wrong) {
+              setTimeout(deleteChars, pauseAfterMs);
+            } else {
+              // Final correct text — remove cursor blink class
+              el.classList.remove('typing-cursor-pink');
+              el.classList.add('font-extrabold');
+            }
+          }
+        }
+
+        // --- Delete back to empty ---
+        function deleteChars() {
+          if (el.textContent.length > 0) {
+            el.textContent = el.textContent.slice(0, -1);
+            setTimeout(deleteChars, DEL_SPEED);
+          } else {
+            // Move to next step after a tiny pause
+            stepIdx++;
+            setTimeout(runStep, 200);
+          }
+        }
+
+        typeChar();
+      }
+
+      runStep();
     }
 
     function initConfetti() {
@@ -876,28 +1139,21 @@
 
       birthdayData.timeCapsuleWishes.forEach((wish, idx) => {
         const card = document.createElement("div");
-        card.className = `glass-card brutal-border rounded-3xl p-6 sm:p-9 shadow-brutal-sm hover:shadow-brutal transition-all duration-300 flex flex-col justify-between ${wish.cardColor || 'bg-emerald-50/80 border-emerald-200'}`;
+        card.className = `glass-card brutal-border rounded-3xl p-8 sm:p-12 shadow-brutal-sm hover:shadow-brutal transition-all duration-300 flex flex-col justify-between min-h-[340px] sm:min-h-[400px] ${wish.cardColor || 'bg-emerald-50/80 border-emerald-200'}`;
 
         card.innerHTML = `
-          <div class="space-y-4">
-            <div class="flex items-center justify-between">
-              <span class="w-11 h-11 rounded-xl bg-white brutal-border flex items-center justify-center text-2xl shadow-sm">
-                ${wish.icon}
-              </span>
-              <p class="text-base text-emerald-700 font-serif font-bold tracking-wider opacity-90" dir="rtl">${wish.arabic}</p>
+          <div class="space-y-6">
+            <div class="text-center">
+              <h3 class="font-serif font-bold text-slate-900 text-2xl sm:text-3xl tracking-tight">${wish.title}</h3>
             </div>
             
-            <div>
-              <h3 class="font-bold text-slate-900 text-xl sm:text-2xl">${wish.title}</h3>
-            </div>
-            
-            <p class="text-sm sm:text-base text-slate-700 leading-relaxed pt-1">
+            <p class="font-sans text-base sm:text-lg text-slate-700 leading-[1.85] tracking-wide text-center">
               ${wish.desc}
             </p>
           </div>
 
-          <div class="pt-5 mt-5 border-t border-emerald-200/70 flex items-center justify-center text-center">
-            <button class="hover:text-pink-600 font-semibold flex items-center gap-2 transition-colors aminkan-btn text-sm text-slate-600" data-index="${idx}">
+          <div class="pt-6 mt-6 border-t border-emerald-200/70 flex items-center justify-center text-center">
+            <button class="hover:text-pink-600 font-semibold flex items-center gap-2 transition-colors aminkan-btn text-sm sm:text-base text-slate-600" data-index="${idx}">
               <span>🤲</span>
               <span>Aamiin yaa rabbal'aalamiin</span>
             </button>
@@ -1097,7 +1353,449 @@
       div.innerText = string;
       return div.innerHTML;
     }
+
+
+    /* ==========================================================================
+       8. PHOTO BOOTH
+       ========================================================================== */
+
+    let pbCurrentTemplate = 1;
+    let pbImages = [null, null, null];
+    let pbCameraTargetSlot = -1;
+    let pbCameraStream = null;
+
+    // ── Template Selection ────────────────────────────────────────────────────
+    function selectPhotoBoothTemplate(n) {
+      pbCurrentTemplate = n;
+      document.querySelectorAll('.pb-tpl-btn').forEach((btn, i) => {
+        const isActive = (i + 1) === n;
+        btn.classList.toggle('ring-2', isActive);
+        btn.classList.toggle('ring-offset-2', isActive);
+        btn.classList.toggle('scale-105', isActive);
+        btn.classList.toggle('-translate-y-1', isActive);
+        // Different ring colors per template
+        if (n === 1) { btn.classList.toggle('ring-pink-500', isActive); }
+        else if (n === 2) { btn.classList.toggle('ring-amber-600', isActive); }
+        else if (n === 3) { btn.classList.toggle('ring-yellow-500', isActive); }
+      });
+    }
+
+    // ── Slot Popover Menu ─────────────────────────────────────────────────────
+    function toggleSlotMenu(slotIdx) {
+      if (pbImages[slotIdx]) return; // already has image
+      // Close all other menus first
+      document.querySelectorAll('.pb-slot-menu').forEach((m, i) => {
+        if (i !== slotIdx) m.classList.add('hidden');
+      });
+      const menu = document.getElementById(`pb-menu-${slotIdx}`);
+      menu.classList.toggle('hidden');
+    }
+
+    // Close menus when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.pb-slot-wrapper')) {
+        document.querySelectorAll('.pb-slot-menu').forEach(m => m.classList.add('hidden'));
+      }
+    });
+
+    // ── File Upload ───────────────────────────────────────────────────────────
+    function handlePhotoBoothUpload(event, slotIdx) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => { setPhotoBoothSlot(slotIdx, img); };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+      // Close the menu
+      document.getElementById(`pb-menu-${slotIdx}`).classList.add('hidden');
+    }
+
+    function setPhotoBoothSlot(slotIdx, imgEl) {
+      pbImages[slotIdx] = imgEl;
+      const previewImg = document.getElementById(`pb-img-${slotIdx}`);
+      const removeBtn  = document.getElementById(`pb-remove-${slotIdx}`);
+      const slot       = document.getElementById(`pb-slot-${slotIdx}`);
+      previewImg.src = imgEl.src;
+      previewImg.classList.remove('hidden');
+      removeBtn.classList.remove('hidden');
+      removeBtn.classList.add('flex');
+      slot.querySelector('.pb-slot-placeholder').classList.add('hidden');
+      // Close menu
+      document.getElementById(`pb-menu-${slotIdx}`).classList.add('hidden');
+    }
+
+    function removePhotoBoothSlot(event, slotIdx) {
+      event.stopPropagation();
+      pbImages[slotIdx] = null;
+      const previewImg = document.getElementById(`pb-img-${slotIdx}`);
+      const removeBtn  = document.getElementById(`pb-remove-${slotIdx}`);
+      const slot       = document.getElementById(`pb-slot-${slotIdx}`);
+      previewImg.classList.add('hidden');
+      removeBtn.classList.add('hidden');
+      removeBtn.classList.remove('flex');
+      slot.querySelector('.pb-slot-placeholder').classList.remove('hidden');
+      document.getElementById('pb-preview-section').classList.add('hidden');
+    }
+
+    // ── Camera ────────────────────────────────────────────────────────────────
+    async function openCamera(slotIdx) {
+      pbCameraTargetSlot = slotIdx;
+      // Close popover
+      document.getElementById(`pb-menu-${slotIdx}`).classList.add('hidden');
+      const modal = document.getElementById('pb-camera-modal');
+      const video = document.getElementById('pb-camera-video');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      try {
+        pbCameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+        video.srcObject = pbCameraStream;
+      } catch (err) {
+        alert('Tidak bisa mengakses kamera: ' + err.message);
+        closeCamera();
+      }
+    }
+
+    function captureFromCamera() {
+      const video  = document.getElementById('pb-camera-video');
+      const canvas = document.getElementById('pb-camera-canvas');
+      canvas.width  = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d').drawImage(video, 0, 0);
+      const img = new Image();
+      img.onload = () => {
+        setPhotoBoothSlot(pbCameraTargetSlot, img);
+        closeCamera();
+      };
+      img.src = canvas.toDataURL('image/jpeg', 0.92);
+    }
+
+    function closeCamera() {
+      if (pbCameraStream) {
+        pbCameraStream.getTracks().forEach(t => t.stop());
+        pbCameraStream = null;
+      }
+      const modal = document.getElementById('pb-camera-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // ── Canvas Helpers ────────────────────────────────────────────────────────
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function drawImageCover(ctx, img, x, y, w, h, radius) {
+      const r = radius || 12;
+      if (!img) {
+        ctx.save();
+        roundRect(ctx, x, y, w, h, r);
+        ctx.fillStyle = 'rgba(200,200,200,0.15)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(150,150,150,0.3)';
+        ctx.setLineDash([8, 6]);
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = 'rgba(120,120,120,0.4)';
+        ctx.font = `${Math.min(w, h) * 0.18}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('📷', x + w / 2, y + h / 2);
+        ctx.restore();
+        return;
+      }
+      const ratio = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+      const sw = img.naturalWidth * ratio, sh = img.naturalHeight * ratio;
+      const sx = (sw - w) / 2, sy = (sh - h) / 2;
+      ctx.save();
+      roundRect(ctx, x, y, w, h, r);
+      ctx.clip();
+      ctx.drawImage(img, x - sx, y - sy, sw, sh);
+      ctx.restore();
+    }
+
+    function seededRandom(seed) {
+      let s = seed;
+      return function() {
+        s = (s * 16807) % 2147483647;
+        return (s - 1) / 2147483646;
+      };
+    }
+
+    // ── Template 1: COLOUR LIGHT ──────────────────────────────────────────────
+    function drawTemplate1(ctx, W, H) {
+      // Soft pink gradient background
+      const grad = ctx.createLinearGradient(0, 0, W, H);
+      grad.addColorStop(0, '#FFF0F5');
+      grad.addColorStop(0.4, '#FCE4EC');
+      grad.addColorStop(0.7, '#F8E8F0');
+      grad.addColorStop(1, '#FFF5F7');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+
+      // Scattered confetti dots
+      const rng = seededRandom(42);
+      const dotColors = ['#FDA4AF80','#F9A8D480','#C084FC60','#67E8F960','#FCD34D50','#86EFAC50'];
+      for (let i = 0; i < 60; i++) {
+        const dx = rng() * W, dy = rng() * H, dr = 2 + rng() * 5;
+        ctx.beginPath();
+        ctx.arc(dx, dy, dr, 0, Math.PI * 2);
+        ctx.fillStyle = dotColors[Math.floor(rng() * dotColors.length)];
+        ctx.fill();
+      }
+
+      // Light border inner frame
+      ctx.save();
+      roundRect(ctx, 12, 12, W - 24, H - 24, 20);
+      ctx.strokeStyle = 'rgba(244, 114, 182, 0.2)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.restore();
+
+      const PAD = 30, GAP = 18;
+      const slotW = W - PAD * 2, slotH = Math.round((H - PAD * 2 - GAP * 2 - 56) / 3);
+      [0, 1, 2].forEach(i => {
+        const x = PAD, y = PAD + i * (slotH + GAP);
+        // White photo frame
+        ctx.save();
+        ctx.shadowColor = 'rgba(0,0,0,0.06)';
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetY = 3;
+        roundRect(ctx, x - 4, y - 4, slotW + 8, slotH + 8, 16);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fill();
+        ctx.restore();
+        drawImageCover(ctx, pbImages[i], x, y, slotW, slotH, 12);
+      });
+
+      // Bottom label
+      ctx.save();
+      ctx.font = 'bold 16px "Playfair Display", serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillStyle = '#DB2777';
+      ctx.globalAlpha = 0.7;
+      ctx.fillText('♡  Barakallah Fii Umrik  ♡', W / 2, H - 16);
+      ctx.globalAlpha = 1;
+      ctx.restore();
+    }
+
+    // ── Template 2: CLASSIC WITH FLOWER ───────────────────────────────────────
+    function drawTemplate2(ctx, W, H) {
+      // Warm cream/ivory background
+      const grad = ctx.createLinearGradient(0, 0, W, H);
+      grad.addColorStop(0, '#FFFEF5');
+      grad.addColorStop(0.5, '#FFF8E7');
+      grad.addColorStop(1, '#FFF5E1');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+
+      // Gold ornamental double border
+      ctx.save();
+      roundRect(ctx, 10, 10, W - 20, H - 20, 18);
+      ctx.strokeStyle = 'rgba(180, 140, 80, 0.3)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      roundRect(ctx, 16, 16, W - 32, H - 32, 14);
+      ctx.strokeStyle = 'rgba(180, 140, 80, 0.15)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.restore();
+
+      // Scattered rose-gold dots
+      const rng = seededRandom(77);
+      for (let i = 0; i < 45; i++) {
+        const dx = rng() * W, dy = rng() * H, dr = 1 + rng() * 3;
+        ctx.beginPath();
+        ctx.arc(dx, dy, dr, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(180,140,80,${0.06 + rng() * 0.1})`;
+        ctx.fill();
+      }
+
+      const PAD = 32, GAP = 18;
+      const slotW = W - PAD * 2, slotH = Math.round((H - PAD * 2 - GAP * 2 - 64) / 3);
+      [0, 1, 2].forEach(i => {
+        const x = PAD, y = PAD + i * (slotH + GAP);
+        // Elegant thin gold frame
+        ctx.save();
+        ctx.shadowColor = 'rgba(120,90,40,0.08)';
+        ctx.shadowBlur = 6;
+        ctx.shadowOffsetY = 2;
+        roundRect(ctx, x - 5, y - 5, slotW + 10, slotH + 10, 14);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fill();
+        roundRect(ctx, x - 5, y - 5, slotW + 10, slotH + 10, 14);
+        ctx.strokeStyle = 'rgba(180,140,80,0.25)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.restore();
+        drawImageCover(ctx, pbImages[i], x, y, slotW, slotH, 10);
+      });
+
+      // Flower decorations in corners
+      ctx.save();
+      ctx.font = '28px serif';
+      ctx.globalAlpha = 0.5;
+      ctx.fillText('🌸', 14, 38);
+      ctx.fillText('🌿', W - 42, 40);
+      ctx.fillText('🌷', 14, H - 14);
+      ctx.fillText('🍃', W - 42, H - 14);
+      ctx.globalAlpha = 1;
+      ctx.restore();
+
+      // Elegant cursive label at bottom
+      ctx.save();
+      ctx.font = 'italic bold 17px "Playfair Display", serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillStyle = '#A67B4A';
+      ctx.globalAlpha = 0.75;
+      ctx.fillText('✿  Barakallah Fii Umrik  ✿', W / 2, H - 14);
+      ctx.globalAlpha = 1;
+      ctx.restore();
+    }
+
+    // ── Template 3: GLAZY DARK / ELEGANT ──────────────────────────────────────
+    function drawTemplate3(ctx, W, H) {
+      // Deep navy-to-dark gradient
+      const grad = ctx.createLinearGradient(0, 0, W * 0.3, H);
+      grad.addColorStop(0, '#0B0E1A');
+      grad.addColorStop(0.3, '#111936');
+      grad.addColorStop(0.7, '#0D1B3E');
+      grad.addColorStop(1, '#080C18');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+
+      // Sparkle particles
+      const rng = seededRandom(99);
+      for (let i = 0; i < 80; i++) {
+        const sx = rng() * W, sy = rng() * H;
+        const sr = 0.5 + rng() * 2.5;
+        const alpha = 0.15 + rng() * 0.5;
+        ctx.beginPath();
+        ctx.arc(sx, sy, sr, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(212, 175, 55, ${alpha})`;
+        ctx.fill();
+      }
+
+      // Larger glow orbs
+      for (let i = 0; i < 8; i++) {
+        const ox = rng() * W, oy = rng() * H;
+        const or2 = 10 + rng() * 30;
+        const glow = ctx.createRadialGradient(ox, oy, 0, ox, oy, or2);
+        glow.addColorStop(0, 'rgba(212, 175, 55, 0.08)');
+        glow.addColorStop(1, 'rgba(212, 175, 55, 0)');
+        ctx.fillStyle = glow;
+        ctx.fillRect(ox - or2, oy - or2, or2 * 2, or2 * 2);
+      }
+
+      // Gold border
+      ctx.save();
+      roundRect(ctx, 8, 8, W - 16, H - 16, 16);
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.35)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.restore();
+
+      const PAD = 28, GAP = 16;
+      const slotW = W - PAD * 2, slotH = Math.round((H - PAD * 2 - GAP * 2 - 56) / 3);
+      [0, 1, 2].forEach(i => {
+        const x = PAD, y = PAD + i * (slotH + GAP);
+        // Subtle gold frame around photo
+        ctx.save();
+        roundRect(ctx, x - 3, y - 3, slotW + 6, slotH + 6, 14);
+        ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.restore();
+        drawImageCover(ctx, pbImages[i], x, y, slotW, slotH, 12);
+      });
+
+      // Gold corner ornaments
+      ctx.save();
+      ctx.font = '14px serif';
+      ctx.fillStyle = '#D4AF37';
+      ctx.globalAlpha = 0.6;
+      ctx.fillText('✦', 16, 24);
+      ctx.fillText('✦', W - 26, 24);
+      ctx.fillText('✦', 16, H - 12);
+      ctx.fillText('✦', W - 26, H - 12);
+      ctx.globalAlpha = 1;
+      ctx.restore();
+
+      // Gold label at bottom
+      ctx.save();
+      ctx.font = 'bold 15px "Playfair Display", serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillStyle = '#D4AF37';
+      ctx.globalAlpha = 0.8;
+      ctx.fillText('✦  Barakallah Fii Umrik  ✦', W / 2, H - 14);
+      ctx.globalAlpha = 1;
+      ctx.restore();
+    }
+
+    // ── Generate ──────────────────────────────────────────────────────────────
+    function generatePhotoBooth() {
+      const hasAny = pbImages.some(Boolean);
+      if (!hasAny) {
+        alert('Masukkan minimal 1 foto dulu ya! 📷');
+        return;
+      }
+
+      const canvas = document.getElementById('pb-canvas');
+      const ctx    = canvas.getContext('2d');
+      const tpl    = pbCurrentTemplate;
+
+      // All 3 templates: vertical strip, 3 photos stacked, different frame styles
+      // Canvas size: photo booth strip (portrait)
+      const W = 480;
+      const slotH = Math.round(W * 0.75); // ~3:4 per slot
+      const PAD = (tpl === 2) ? 32 : 28;
+      const GAP = (tpl === 2) ? 18 : 16;
+      const LABEL_H = 56;
+      const H = PAD * 2 + slotH * 3 + GAP * 2 + LABEL_H;
+      canvas.width = W;
+      canvas.height = H;
+
+      if (tpl === 1) drawTemplate1(ctx, W, H);
+      else if (tpl === 2) drawTemplate2(ctx, W, H);
+      else if (tpl === 3) drawTemplate3(ctx, W, H);
+
+      // Show preview
+      const preview = document.getElementById('pb-preview-section');
+      preview.classList.remove('hidden');
+      preview.classList.add('flex');
+      preview.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function downloadPhotoBooth() {
+      const canvas = document.getElementById('pb-canvas');
+      const link   = document.createElement('a');
+      link.download = `photo-booth-kenangan-${Date.now()}.png`;
+      link.href     = canvas.toDataURL('image/png');
+      link.click();
+      triggerMiniHeartConfetti(document.getElementById('pb-download-btn'));
+    }
+
+    // Activate template 1 on init
+    selectPhotoBoothTemplate(1);
+
   </script>
+
 </body>
 
 </html>
