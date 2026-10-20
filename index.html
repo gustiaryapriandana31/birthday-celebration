@@ -137,11 +137,16 @@
       animation: blink 0.8s step-start infinite;
     }
 
-    @keyframes blink {
-      50% {
-        opacity: 0;
-      }
+    /* Photo Booth Template Slider on Mobile */
+    .pb-slider-container {
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
+    .pb-slider-container::-webkit-scrollbar {
+      display: none;
+    }
+
 
     /* Floating particles */
     @keyframes float-gentle {
@@ -181,8 +186,8 @@
     <div class="absolute bottom-20 left-1/4 w-[30rem] h-[30rem] bg-purple-100/40 rounded-full blur-3xl"></div>
   </div>
 
-  <!-- Minimalist Floating Top Header -->
-  <header class="sticky top-4 z-40 px-4 max-w-4xl mx-auto">
+  <!-- Minimalist Floating Top Header (Hidden on Mobile) -->
+  <header class="hidden sm:block sticky top-4 z-40 px-4 max-w-4xl mx-auto">
     <div
       class="glass-card brutal-border rounded-full px-5 py-3 shadow-brutal flex items-center justify-between transition-all">
       <div class="flex items-center space-x-2">
@@ -555,10 +560,10 @@
             <span class="text-base">📍</span>
             <h3 class="font-bold text-slate-800 text-sm sm:text-base">Dinding Harapan</h3>
             <span id="stickyNoteCountBadge"
-              class="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-200 text-amber-900">0 Catatan</span>
+              class="text-[8px] sm:text-xs font-bold px-1.5 sm:px-px sm:py-px py-0.5 rounded-full bg-amber-200 text-amber-900 tracking-tight">0 Catatan</span>
           </div>
           <button id="resetStickyNotesBtn" title="Kosongkan catatan di papan"
-            class="text-xs text-slate-400 hover:text-slate-700 underline">
+            class="text-[8px] sm:text-xs text-slate-600 hover:text-slate-700 underline">
             Kosongkan Papan
           </button>
         </div>
@@ -588,56 +593,289 @@
       </div>
 
       <!-- Template Picker -->
-      <div class="glass-card brutal-border rounded-3xl p-6 sm:p-8 shadow-brutal bg-white/85">
-        <p class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-4">1. Pilih Template Bingkai</p>
-        <div class="grid grid-cols-3 gap-3 sm:gap-4" id="pb-template-picker">
+      <div class="glass-card brutal-border rounded-3xl p-4 sm:p-8 shadow-brutal bg-white/85">
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-4 px-1 flex items-center justify-between">
+          <span>1. Pilih Template Bingkai</span>
+          <span class="sm:hidden text-[11px] font-medium text-pink-500">Geser untuk ganti ➔</span>
+        </p>
 
-          <!-- Template 1: Colour Light -->
-          <button id="pb-tpl-1" onclick="selectPhotoBoothTemplate(1)" class="pb-tpl-btn group relative rounded-2xl overflow-hidden brutal-border shadow-brutal-sm hover:shadow-brutal transition-all duration-200 hover:-translate-y-1 aspect-[2/3] flex flex-col gap-[5px] items-center justify-center p-2.5" style="background:linear-gradient(145deg,#FFF5F7,#FDE8EF,#F9E4F1)">
-            <div class="w-full flex-1 rounded-lg bg-white/60 border border-pink-200/80 shadow-sm"></div>
-            <div class="w-full flex-1 rounded-lg bg-white/60 border border-pink-200/80 shadow-sm"></div>
-            <div class="w-full flex-1 rounded-lg bg-white/60 border border-pink-200/80 shadow-sm"></div>
-            <span class="absolute bottom-1.5 left-0 right-0 text-center">
-              <span class="text-[8px] font-extrabold tracking-widest text-pink-600/80 uppercase">Colour Light</span>
-            </span>
-            <!-- Decorative dots -->
-            <div class="absolute top-1 right-1 flex gap-0.5"><span class="w-1 h-1 rounded-full bg-pink-300/60"></span><span class="w-1 h-1 rounded-full bg-rose-300/60"></span></div>
+        <!-- Template Picker: Mobile Horizontal Slider (1 slide 1 bingkai) & Desktop 3-column Grid with Comfortable Padding -->
+        <div class="flex sm:grid sm:grid-cols-3 gap-4 sm:gap-5 overflow-x-auto sm:overflow-visible py-2 pb-4 sm:py-0 snap-x snap-mandatory scroll-smooth pb-slider-container px-3 sm:px-0" id="pb-template-picker">
+
+          <!-- Template 1: Sweet Pink 4-Grid (Art Deco Geometric Line Frame) -->
+          <button id="pb-tpl-1" onclick="selectAndScrollToTemplate(1)"
+            class="pb-tpl-btn group relative rounded-2xl overflow-hidden shadow-brutal-sm hover:shadow-brutal transition-all duration-300 hover:-translate-y-1 w-[72vw] max-w-[275px] sm:max-w-none sm:w-auto shrink-0 snap-center aspect-[2/3] flex flex-col p-4 sm:p-3 ring-2 ring-offset-2 ring-pink-500 scale-105 -translate-y-1"
+            style="background: linear-gradient(160deg,#FFF5F8 0%,#FFE6EE 50%,#FFF0F5 100%); border:2px solid rgba(244,63,94,0.65);">
+
+            <!-- Top Header Strip -->
+            <div class="w-full flex items-center justify-between px-1.5 mb-1.5" style="font-size:11px; line-height:1; color:#E11D48;">
+              <span>🌸🎀</span><span class="text-[10px] sm:text-[8px] font-extrabold tracking-wider text-pink-600">SWEET PINK</span><span>✨🌸</span>
+            </div>
+
+            <!-- 4-Grid Slots Preview (2x2) with safe inner margin -->
+            <div class="w-full flex-1 grid grid-cols-2 gap-2 mb-1.5 px-0.5">
+              <!-- Slot 1 -->
+              <div class="rounded-lg relative overflow-hidden flex items-center justify-center"
+                style="background:linear-gradient(135deg,#FFDCE5,#FFA8BF); border:1.5px solid rgba(244,63,94,0.5); box-shadow:0 2px 4px rgba(244,63,94,0.15)">
+                <span class="text-base sm:text-xs opacity-70">🌸</span>
+                <span class="absolute top-1 left-1.5 text-[8px]">🎀</span>
+              </div>
+              <!-- Slot 2 -->
+              <div class="rounded-lg relative overflow-hidden flex items-center justify-center"
+                style="background:linear-gradient(135deg,#FFE5EC,#FFB6CA); border:1.5px solid rgba(244,63,94,0.5); box-shadow:0 2px 4px rgba(244,63,94,0.15)">
+                <span class="text-base sm:text-xs opacity-70">✨</span>
+                <span class="absolute top-1 right-1.5 text-[8px]">💖</span>
+              </div>
+              <!-- Slot 3 -->
+              <div class="rounded-lg relative overflow-hidden flex items-center justify-center"
+                style="background:linear-gradient(135deg,#FFDFEA,#FFAFC4); border:1.5px solid rgba(244,63,94,0.5); box-shadow:0 2px 4px rgba(244,63,94,0.15)">
+                <span class="text-base sm:text-xs opacity-70">🌷</span>
+                <span class="absolute bottom-1 left-1.5 text-[8px]">💫</span>
+              </div>
+              <!-- Slot 4 -->
+              <div class="rounded-lg relative overflow-hidden flex items-center justify-center"
+                style="background:linear-gradient(135deg,#FFE9F0,#FFBFD0); border:1.5px solid rgba(244,63,94,0.5); box-shadow:0 2px 4px rgba(244,63,94,0.15)">
+                <span class="text-base sm:text-xs opacity-70">🍰</span>
+                <span class="absolute bottom-1 right-1.5 text-[8px]">🎈</span>
+              </div>
+            </div>
+
+            <!-- Big Clear Label & Subtitle -->
+            <div class="w-full text-center py-0.5">
+              <div class="text-sm sm:text-xs font-black tracking-wide text-pink-600 uppercase">
+                🌸 4-Grid Sweet Pink
+              </div>
+              <div class="text-[11px] sm:text-[9px] font-semibold text-pink-500/90 mt-0.5">
+                4 Foto • Grid 2x2 Polaroid
+              </div>
+            </div>
+
+            <!-- ART DECO GEOMETRIC FRAME SVG OVERLAY (Rose Pink - Inset Padding) -->
+            <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 160 240" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#E11D48" fill="#E11D48" stroke-linecap="square">
+                <!-- Outer border with padding -->
+                <rect x="8" y="8" width="144" height="224" fill="none" stroke-width="1.5" opacity="0.85"/>
+                <!-- Inner border -->
+                <rect x="13" y="13" width="134" height="214" fill="none" stroke-width="0.7" opacity="0.45"/>
+
+                <!-- TOP-LEFT corner bracket -->
+                <polyline points="36,8 8,8 8,36" fill="none" stroke-width="2" opacity="0.95"/>
+                <polyline points="31,13 13,13 13,31" fill="none" stroke-width="1" opacity="0.55"/>
+                <polygon points="8,8 11,5 14,8 11,11" opacity="0.9"/>
+
+                <!-- TOP-RIGHT corner bracket -->
+                <polyline points="124,8 152,8 152,36" fill="none" stroke-width="2" opacity="0.95"/>
+                <polyline points="129,13 147,13 147,31" fill="none" stroke-width="1" opacity="0.55"/>
+                <polygon points="152,8 155,5 158,8 155,11" opacity="0.9"/>
+
+                <!-- BOTTOM-LEFT corner bracket -->
+                <polyline points="36,232 8,232 8,204" fill="none" stroke-width="2" opacity="0.95"/>
+                <polyline points="31,227 13,227 13,209" fill="none" stroke-width="1" opacity="0.55"/>
+                <polygon points="8,232 11,235 14,232 11,229" opacity="0.9"/>
+
+                <!-- BOTTOM-RIGHT corner bracket -->
+                <polyline points="124,232 152,232 152,204" fill="none" stroke-width="2" opacity="0.95"/>
+                <polyline points="129,227 147,227 147,209" fill="none" stroke-width="1" opacity="0.55"/>
+                <polygon points="152,232 155,235 158,232 155,229" opacity="0.9"/>
+
+                <!-- Mid-side ticks & diamonds -->
+                <line x1="74" y1="8" x2="86" y2="8" stroke-width="1.8" opacity="0.8"/>
+                <polygon points="80,7 83,10 80,13 77,10" opacity="0.85"/>
+                <line x1="74" y1="232" x2="86" y2="232" stroke-width="1.8" opacity="0.8"/>
+                <polygon points="80,233 83,230 80,227 77,230" opacity="0.85"/>
+                <line x1="8" y1="114" x2="8" y2="126" stroke-width="1.8" opacity="0.8"/>
+                <polygon points="7,120 10,117 13,120 10,123" opacity="0.85"/>
+                <line x1="152" y1="114" x2="152" y2="126" stroke-width="1.8" opacity="0.8"/>
+                <polygon points="153,120 150,117 147,120 150,123" opacity="0.85"/>
+              </g>
+            </svg>
           </button>
 
-          <!-- Template 2: Classic with Flower -->
-          <button id="pb-tpl-2" onclick="selectPhotoBoothTemplate(2)" class="pb-tpl-btn group relative rounded-2xl overflow-hidden brutal-border shadow-brutal-sm hover:shadow-brutal transition-all duration-200 hover:-translate-y-1 aspect-[2/3] flex flex-col gap-[5px] items-center justify-center p-2.5" style="background:linear-gradient(145deg,#FFFCF0,#FFF5E6,#FEF0DB)">
-            <div class="w-full flex-1 rounded-lg bg-white/50 shadow-sm" style="border:1.5px solid rgba(180,140,90,0.25)"></div>
-            <div class="w-full flex-1 rounded-lg bg-white/50 shadow-sm" style="border:1.5px solid rgba(180,140,90,0.25)"></div>
-            <div class="w-full flex-1 rounded-lg bg-white/50 shadow-sm" style="border:1.5px solid rgba(180,140,90,0.25)"></div>
-            <span class="absolute bottom-1.5 left-0 right-0 text-center">
-              <span class="text-[8px] font-extrabold tracking-widest uppercase" style="color:#A67B4A">Classic Floral</span>
-            </span>
-            <!-- Flower decorations -->
-            <div class="absolute top-0.5 left-0.5 text-[8px] opacity-60">🌸</div>
-            <div class="absolute bottom-5 right-0.5 text-[8px] opacity-60">🌿</div>
+          <!-- Template 2: Bloom & Petal (Warm Amber Gold 3-Grid) -->
+          <button id="pb-tpl-2" onclick="selectAndScrollToTemplate(2)"
+            class="pb-tpl-btn group relative rounded-2xl overflow-hidden shadow-brutal-sm hover:shadow-brutal transition-all duration-300 hover:-translate-y-1 w-[72vw] max-w-[275px] sm:max-w-none sm:w-auto shrink-0 snap-center aspect-[2/3] flex flex-col p-4 sm:p-3"
+            style="background: linear-gradient(160deg,#FFF8EC 0%,#FFE9C0 40%,#FFF4DC 100%); border:2px solid rgba(200,140,30,0.65);">
+
+            <!-- Top floral header strip -->
+            <div class="w-full flex items-center justify-between px-1.5 mb-1.5" style="font-size:11px; line-height:1;">
+              <span>🌼🌸</span><span class="text-[10px] sm:text-[8px] font-extrabold tracking-wider text-amber-800">BLOOM & PETAL</span><span>🌺🌻</span>
+            </div>
+
+            <!-- Photo slot 1 -->
+            <div class="w-full flex-1 rounded-lg relative overflow-hidden mb-1 flex items-center justify-center"
+              style="background:linear-gradient(135deg,#FFD580,#FFC040,#F0A010); border:1.5px solid rgba(200,140,30,0.6); box-shadow:0 2px 6px rgba(200,140,30,0.25)">
+              <span class="text-base sm:text-xs opacity-70">🌼</span>
+              <div class="absolute top-1 left-1.5 text-[8px]">🌿</div>
+              <div class="absolute top-1 right-1.5 text-[8px]">🌻</div>
+            </div>
+
+            <!-- Photo slot 2 -->
+            <div class="w-full flex-1 rounded-lg relative overflow-hidden mb-1 flex items-center justify-center"
+              style="background:linear-gradient(135deg,#FFE08A,#FFB830,#E8900A); border:1.5px solid rgba(200,140,30,0.6); box-shadow:0 2px 6px rgba(200,140,30,0.25)">
+              <span class="text-base sm:text-xs opacity-70">🌻</span>
+              <div class="absolute bottom-1 left-1.5 text-[8px]">🌾</div>
+              <div class="absolute bottom-1 right-1.5 text-[8px]">🌼</div>
+            </div>
+
+            <!-- Photo slot 3 -->
+            <div class="w-full flex-1 rounded-lg relative overflow-hidden mb-1.5 flex items-center justify-center"
+              style="background:linear-gradient(135deg,#FFEAA0,#FFD060,#F0A820); border:1.5px solid rgba(200,140,30,0.6); box-shadow:0 2px 6px rgba(200,140,30,0.25)">
+              <span class="text-base sm:text-xs opacity-70">🌺</span>
+              <div class="absolute top-1 left-1.5 text-[8px]">🌸</div>
+              <div class="absolute top-1 right-1.5 text-[8px]">🌾</div>
+            </div>
+
+            <!-- Big Clear Label & Subtitle -->
+            <div class="w-full text-center py-0.5">
+              <div class="text-sm sm:text-xs font-black tracking-wide text-amber-800 uppercase">
+                ✿ Bloom &amp; Petal
+              </div>
+              <div class="text-[11px] sm:text-[9px] font-semibold text-amber-700/90 mt-0.5">
+                3 Foto • Vertical Warm Floral
+              </div>
+            </div>
+
+            <!-- ART DECO GEOMETRIC FRAME SVG OVERLAY (Gold - Inset Padding) -->
+            <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 160 240" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#C88C1E" fill="#C88C1E" stroke-linecap="square">
+                <!-- Outer border with padding -->
+                <rect x="8" y="8" width="144" height="224" fill="none" stroke-width="1.5" opacity="0.85"/>
+                <!-- Inner border -->
+                <rect x="13" y="13" width="134" height="214" fill="none" stroke-width="0.7" opacity="0.45"/>
+
+                <!-- TOP-LEFT corner bracket -->
+                <polyline points="36,8 8,8 8,36" fill="none" stroke-width="2" opacity="0.95"/>
+                <polyline points="31,13 13,13 13,31" fill="none" stroke-width="1" opacity="0.55"/>
+                <polygon points="8,8 11,5 14,8 11,11" opacity="0.9"/>
+
+                <!-- TOP-RIGHT corner bracket -->
+                <polyline points="124,8 152,8 152,36" fill="none" stroke-width="2" opacity="0.95"/>
+                <polyline points="129,13 147,13 147,31" fill="none" stroke-width="1" opacity="0.55"/>
+                <polygon points="152,8 155,5 158,8 155,11" opacity="0.9"/>
+
+                <!-- BOTTOM-LEFT corner bracket -->
+                <polyline points="36,232 8,232 8,204" fill="none" stroke-width="2" opacity="0.95"/>
+                <polyline points="31,227 13,227 13,209" fill="none" stroke-width="1" opacity="0.55"/>
+                <polygon points="8,232 11,235 14,232 11,229" opacity="0.9"/>
+
+                <!-- BOTTOM-RIGHT corner bracket -->
+                <polyline points="124,232 152,232 152,204" fill="none" stroke-width="2" opacity="0.95"/>
+                <polyline points="129,227 147,227 147,209" fill="none" stroke-width="1" opacity="0.55"/>
+                <polygon points="152,232 155,235 158,232 155,229" opacity="0.9"/>
+
+                <!-- Mid ticks -->
+                <line x1="74" y1="8" x2="86" y2="8" stroke-width="1.8" opacity="0.8"/>
+                <polygon points="80,7 83,10 80,13 77,10" opacity="0.85"/>
+                <line x1="74" y1="232" x2="86" y2="232" stroke-width="1.8" opacity="0.8"/>
+                <polygon points="80,233 83,230 80,227 77,230" opacity="0.85"/>
+                <line x1="8" y1="114" x2="8" y2="126" stroke-width="1.8" opacity="0.8"/>
+                <polygon points="7,120 10,117 13,120 10,123" opacity="0.85"/>
+                <line x1="152" y1="114" x2="152" y2="126" stroke-width="1.8" opacity="0.8"/>
+                <polygon points="153,120 150,117 147,120 150,123" opacity="0.85"/>
+              </g>
+            </svg>
           </button>
 
-          <!-- Template 3: Glazy Dark / Elegant -->
-          <button id="pb-tpl-3" onclick="selectPhotoBoothTemplate(3)" class="pb-tpl-btn group relative rounded-2xl overflow-hidden shadow-brutal-sm hover:shadow-brutal transition-all duration-200 hover:-translate-y-1 aspect-[2/3] flex flex-col gap-[5px] items-center justify-center p-2.5" style="background:linear-gradient(145deg,#1A1A2E,#16213E,#0F3460); border:2px solid rgba(212,175,55,0.35)">
-            <div class="w-full flex-1 rounded-lg shadow-sm" style="background:rgba(255,255,255,0.08); border:1px solid rgba(212,175,55,0.25)"></div>
-            <div class="w-full flex-1 rounded-lg shadow-sm" style="background:rgba(255,255,255,0.08); border:1px solid rgba(212,175,55,0.25)"></div>
-            <div class="w-full flex-1 rounded-lg shadow-sm" style="background:rgba(255,255,255,0.08); border:1px solid rgba(212,175,55,0.25)"></div>
-            <span class="absolute bottom-1.5 left-0 right-0 text-center">
-              <span class="text-[8px] font-extrabold tracking-widest uppercase" style="color:#D4AF37">Dark Elegant</span>
-            </span>
-            <!-- Sparkle decorations -->
-            <div class="absolute top-1.5 right-2 text-[6px]" style="color:#D4AF37">✦</div>
-            <div class="absolute top-3 left-1.5 text-[5px]" style="color:#D4AF37; opacity:0.6">✧</div>
+          <!-- Template 3: Midnight Celestial — Art Deco Geometric Frame -->
+          <button id="pb-tpl-3" onclick="selectAndScrollToTemplate(3)"
+            class="pb-tpl-btn group relative rounded-2xl overflow-hidden shadow-brutal-sm hover:shadow-brutal transition-all duration-300 hover:-translate-y-1 w-[72vw] max-w-[275px] sm:max-w-none sm:w-auto shrink-0 snap-center aspect-[2/3] flex flex-col p-4 sm:p-3"
+            style="background:linear-gradient(160deg,#080C18 0%,#111827 50%,#060A14 100%); border:2px solid rgba(212,175,55,0.75);">
+
+            <!-- Top gold header strip -->
+            <div class="w-full flex items-center justify-between px-1.5 mb-1.5" style="font-size:11px;line-height:1;color:#D4AF37;">
+              <span>✦🌙</span><span class="text-[10px] sm:text-[8px] font-extrabold tracking-wider text-yellow-400">MIDNIGHT CELESTIAL</span><span>🌾✦</span>
+            </div>
+
+            <!-- Photo slot 1 -->
+            <div class="w-full flex-1 rounded-md relative overflow-hidden mb-1 flex items-center justify-center"
+              style="background:linear-gradient(135deg,rgba(212,175,55,0.18),rgba(30,40,80,0.92)); border:1px solid rgba(212,175,55,0.45);">
+              <span class="text-base sm:text-xs text-amber-400 opacity-80">✦</span>
+            </div>
+
+            <!-- Photo slot 2 -->
+            <div class="w-full flex-1 rounded-md relative overflow-hidden mb-1 flex items-center justify-center"
+              style="background:linear-gradient(135deg,rgba(30,40,80,0.92),rgba(212,175,55,0.15)); border:1px solid rgba(212,175,55,0.45);">
+              <span class="text-base sm:text-xs text-amber-300 opacity-80">🌙</span>
+            </div>
+
+            <!-- Photo slot 3 -->
+            <div class="w-full flex-1 rounded-md relative overflow-hidden mb-1.5 flex items-center justify-center"
+              style="background:linear-gradient(135deg,rgba(212,175,55,0.12),rgba(20,30,60,0.95)); border:1px solid rgba(212,175,55,0.45);">
+              <span class="text-base sm:text-xs text-amber-400 opacity-80">💫</span>
+            </div>
+
+            <!-- Big Clear Label & Subtitle -->
+            <div class="w-full text-center py-0.5">
+              <div class="text-sm sm:text-xs font-black tracking-wide text-yellow-400 uppercase">
+                ✦ Dark Celestial
+              </div>
+              <div class="text-[11px] sm:text-[9px] font-semibold text-amber-300/90 mt-0.5">
+                3 Foto • Art Deco Gold
+              </div>
+            </div>
+
+            <!-- ART DECO GEOMETRIC FRAME SVG OVERLAY (Gold - Inset Padding) -->
+            <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 160 240" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#D4AF37" fill="#D4AF37" stroke-linecap="square">
+                <!-- Outer border with padding -->
+                <rect x="8" y="8" width="144" height="224" fill="none" stroke-width="1.5" opacity="0.85"/>
+                <!-- Inner border -->
+                <rect x="13" y="13" width="134" height="214" fill="none" stroke-width="0.7" opacity="0.45"/>
+
+                <!-- TOP-LEFT corner bracket -->
+                <polyline points="36,8 8,8 8,36" fill="none" stroke-width="2" opacity="0.95"/>
+                <polyline points="31,13 13,13 13,31" fill="none" stroke-width="1" opacity="0.55"/>
+                <polygon points="8,8 11,5 14,8 11,11" opacity="0.9"/>
+
+                <!-- TOP-RIGHT corner bracket -->
+                <polyline points="124,8 152,8 152,36" fill="none" stroke-width="2" opacity="0.95"/>
+                <polyline points="129,13 147,13 147,31" fill="none" stroke-width="1" opacity="0.55"/>
+                <polygon points="152,8 155,5 158,8 155,11" opacity="0.9"/>
+
+                <!-- BOTTOM-LEFT corner bracket -->
+                <polyline points="36,232 8,232 8,204" fill="none" stroke-width="2" opacity="0.95"/>
+                <polyline points="31,227 13,227 13,209" fill="none" stroke-width="1" opacity="0.55"/>
+                <polygon points="8,232 11,235 14,232 11,229" opacity="0.9"/>
+
+                <!-- BOTTOM-RIGHT corner bracket -->
+                <polyline points="124,232 152,232 152,204" fill="none" stroke-width="2" opacity="0.95"/>
+                <polyline points="129,227 147,227 147,209" fill="none" stroke-width="1" opacity="0.55"/>
+                <polygon points="152,232 155,235 158,232 155,229" opacity="0.9"/>
+
+                <!-- Mid-top tick -->
+                <line x1="74" y1="8" x2="86" y2="8" stroke-width="1.8" opacity="0.8"/>
+                <polygon points="80,7 83,10 80,13 77,10" opacity="0.85"/>
+
+                <!-- Mid-bottom tick -->
+                <line x1="74" y1="232" x2="86" y2="232" stroke-width="1.8" opacity="0.8"/>
+                <polygon points="80,233 83,230 80,227 77,230" opacity="0.85"/>
+
+                <!-- Mid-left tick -->
+                <line x1="8" y1="114" x2="8" y2="126" stroke-width="1.8" opacity="0.8"/>
+                <polygon points="7,120 10,117 13,120 10,123" opacity="0.85"/>
+
+                <!-- Mid-right tick -->
+                <line x1="152" y1="114" x2="152" y2="126" stroke-width="1.8" opacity="0.8"/>
+                <polygon points="153,120 150,117 147,120 150,123" opacity="0.85"/>
+              </g>
+            </svg>
           </button>
 
+        </div>
+
+        <!-- Mobile Slider Dots Indicator -->
+        <div class="flex sm:hidden justify-center items-center gap-2 mt-3" id="pb-slider-dots">
+          <button type="button" onclick="selectAndScrollToTemplate(1)" id="pb-dot-1" class="h-2 w-6 rounded-full bg-pink-500 transition-all duration-300" aria-label="Template 1"></button>
+          <button type="button" onclick="selectAndScrollToTemplate(2)" id="pb-dot-2" class="h-2 w-2 rounded-full bg-slate-300 transition-all duration-300" aria-label="Template 2"></button>
+          <button type="button" onclick="selectAndScrollToTemplate(3)" id="pb-dot-3" class="h-2 w-2 rounded-full bg-slate-300 transition-all duration-300" aria-label="Template 3"></button>
         </div>
       </div>
 
       <!-- Photo Slot Upload Area -->
-      <div class="glass-card brutal-border rounded-3xl p-6 sm:p-8 shadow-brutal bg-white/85">
-        <p class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-5">2. Isi 3 Slot Foto</p>
+      <div class="glass-card brutal-border rounded-3xl p-4 sm:p-8 shadow-brutal bg-white/85">
+        <p id="pb-slots-title" class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-5">2. Isi 4 Slot Foto (Grid 2x2)</p>
 
-        <div id="pb-slots-container" class="grid grid-cols-3 gap-3 sm:gap-5 mb-6">
+        <div id="pb-slots-container" class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
           <!-- Slot 1 -->
           <div class="pb-slot-wrapper relative" data-slot="0">
             <div id="pb-slot-0" onclick="toggleSlotMenu(0)" class="pb-slot aspect-[3/4] rounded-2xl brutal-border border-dashed bg-slate-50/80 hover:bg-pink-50/50 flex flex-col items-center justify-center cursor-pointer transition-all hover:border-pink-300 hover:-translate-y-0.5 hover:shadow-brutal-sm group relative overflow-hidden">
@@ -711,6 +949,32 @@
                 <input type="file" accept="image/*" class="sr-only" onchange="handlePhotoBoothUpload(event, 2)">
               </label>
               <label class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-indigo-50 cursor-pointer transition-colors group/item" onclick="openCamera(2)">
+                <span class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center text-sm group-hover/item:bg-indigo-200 transition-colors">📷</span>
+                <span class="text-xs font-bold text-slate-700">Gunakan Kamera</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Slot 4 (Untuk Template 1: 4-Grid) -->
+          <div id="pb-slot-wrapper-3" class="pb-slot-wrapper relative" data-slot="3">
+            <div id="pb-slot-3" onclick="toggleSlotMenu(3)" class="pb-slot aspect-[3/4] rounded-2xl brutal-border border-dashed bg-slate-50/80 hover:bg-pink-50/50 flex flex-col items-center justify-center cursor-pointer transition-all hover:border-pink-300 hover:-translate-y-0.5 hover:shadow-brutal-sm group relative overflow-hidden">
+              <div class="pb-slot-placeholder flex flex-col items-center gap-2 pointer-events-none">
+                <div class="w-12 h-12 rounded-full bg-rose-100/70 flex items-center justify-center">
+                  <span class="text-xl opacity-50 group-hover:opacity-80 transition-opacity">📷</span>
+                </div>
+                <span class="text-[10px] font-bold text-slate-400 group-hover:text-rose-500 transition-colors">Tap untuk isi</span>
+                <span class="text-[9px] text-slate-300">Foto 4</span>
+              </div>
+              <img id="pb-img-3" class="absolute inset-0 w-full h-full object-cover rounded-2xl hidden" src="" alt="Foto 4">
+              <button id="pb-remove-3" onclick="removePhotoBoothSlot(event, 3)" class="absolute top-2 right-2 w-7 h-7 bg-red-500/90 backdrop-blur text-white rounded-full text-xs hidden items-center justify-center shadow-lg hover:bg-red-600 z-20 transition-transform hover:scale-110">✕</button>
+            </div>
+            <div id="pb-menu-3" class="pb-slot-menu absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-44 bg-white brutal-border rounded-2xl shadow-brutal-lg p-2 z-30 hidden transition-all animate-[fadeUp_0.15s_ease-out]">
+              <label class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-pink-50 cursor-pointer transition-colors group/item">
+                <span class="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center text-sm group-hover/item:bg-pink-200 transition-colors">📁</span>
+                <span class="text-xs font-bold text-slate-700">Upload Foto</span>
+                <input type="file" accept="image/*" class="sr-only" onchange="handlePhotoBoothUpload(event, 3)">
+              </label>
+              <label class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-indigo-50 cursor-pointer transition-colors group/item" onclick="openCamera(3)">
                 <span class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center text-sm group-hover/item:bg-indigo-200 transition-colors">📷</span>
                 <span class="text-xs font-bold text-slate-700">Gunakan Kamera</span>
               </label>
@@ -885,20 +1149,20 @@
         if (!isDeleting && charIndex <= fullText.length) {
           typingEl.textContent = fullText.substring(0, charIndex);
           charIndex++;
-          setTimeout(type, 110);
+          setTimeout(type, 80);
         } else if (charIndex > fullText.length) {
           // Pause at full text
           setTimeout(() => {
             // Keep the text steady and delightful
             typingEl.classList.remove("typing-cursor");
-          }, 2000);
+          }, 1200);
         }
       }
 
       type();
 
-      // After heading finishes, start subtitle name typo animation
-      const headingDuration = fullText.length * 110 + 2200;
+      // Start subtitle name typing shortly after heading finishes (reduced from 2200ms to 350ms)
+      const headingDuration = fullText.length * 80 + 350;
       setTimeout(initSubtitleNameTyping, headingDuration);
     }
 
@@ -908,13 +1172,13 @@
 
       // Sequence: [text, pauseAfterMs, isWrong]
       const sequence = [
-        { text: 'Nabilah',              pauseAfterMs: 600,  wrong: true  },
-        { text: 'Nabilaaah',            pauseAfterMs: 700,  wrong: true  },
-        { text: 'Nabila Auliana Sholiha!', pauseAfterMs: 0, wrong: false },
+        { text: 'Nabilah',              pauseAfterMs: 300, wrong: true  },
+        { text: 'Nabilaaah',            pauseAfterMs: 340, wrong: true  },
+        { text: 'Nabila Auliana Sholiha!', pauseAfterMs: 0,   wrong: false },
       ];
 
-      const TYPE_SPEED  = 80;  // ms per char when typing
-      const DEL_SPEED   = 45;  // ms per char when deleting
+      const TYPE_SPEED  = 40;  // ms per char when typing (accelerated)
+      const DEL_SPEED   = 22;  // ms per char when deleting (accelerated)
 
       let stepIdx = 0;
 
@@ -955,7 +1219,7 @@
           } else {
             // Move to next step after a tiny pause
             stepIdx++;
-            setTimeout(runStep, 200);
+            setTimeout(runStep, 80);
           }
         }
 
@@ -1360,9 +1624,13 @@
        ========================================================================== */
 
     let pbCurrentTemplate = 1;
-    let pbImages = [null, null, null];
+    let pbImages = [null, null, null, null];
     let pbCameraTargetSlot = -1;
     let pbCameraStream = null;
+
+    // Preload frame overlay for Template 1 (Real 4-Grid Frame)
+    const pbFrame1Img = new Image();
+    pbFrame1Img.src = 'frame_pink_4grid.png';
 
     // ── Template Selection ────────────────────────────────────────────────────
     function selectPhotoBoothTemplate(n) {
@@ -1378,6 +1646,47 @@
         else if (n === 2) { btn.classList.toggle('ring-amber-600', isActive); }
         else if (n === 3) { btn.classList.toggle('ring-yellow-500', isActive); }
       });
+
+      // Update mobile slider dots
+      [1, 2, 3].forEach(idx => {
+        const dot = document.getElementById(`pb-dot-${idx}`);
+        if (!dot) return;
+        const isCur = idx === n;
+        if (isCur) {
+          const colorClass = n === 1 ? 'bg-pink-500' : n === 2 ? 'bg-amber-600' : 'bg-yellow-500';
+          dot.className = `h-2 w-6 rounded-full transition-all duration-300 ${colorClass}`;
+        } else {
+          dot.className = 'h-2 w-2 rounded-full bg-slate-300 transition-all duration-300';
+        }
+      });
+
+      // Toggle Slot 4 for Template 1 (4-Grid) vs Template 2/3 (3-Slot)
+      const slot4 = document.getElementById('pb-slot-wrapper-3');
+      const title = document.getElementById('pb-slots-title');
+      const cont  = document.getElementById('pb-slots-container');
+      if (n === 1) {
+        if (slot4) slot4.classList.remove('hidden');
+        if (title) title.textContent = '2. Isi 4 Slot Foto (Grid 2x2)';
+        if (cont) cont.className = 'grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6';
+      } else {
+        if (slot4) slot4.classList.add('hidden');
+        if (title) title.textContent = '2. Isi 3 Slot Foto (Grid 2 Kolom)';
+        if (cont) cont.className = 'grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mb-6';
+      }
+
+      // Auto re-render if preview is open and photos exist
+      const preview = document.getElementById('pb-preview-section');
+      if (preview && !preview.classList.contains('hidden') && pbImages.some(Boolean)) {
+        generatePhotoBooth();
+      }
+    }
+
+    function selectAndScrollToTemplate(n) {
+      selectPhotoBoothTemplate(n);
+      const card = document.getElementById(`pb-tpl-${n}`);
+      if (card && window.innerWidth < 640) {
+        card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
     }
 
     // ── Slot Popover Menu ─────────────────────────────────────────────────────
@@ -1535,216 +1844,638 @@
       };
     }
 
-    // ── Template 1: COLOUR LIGHT ──────────────────────────────────────────────
-    function drawTemplate1(ctx, W, H) {
-      // Soft pink gradient background
-      const grad = ctx.createLinearGradient(0, 0, W, H);
-      grad.addColorStop(0, '#FFF0F5');
-      grad.addColorStop(0.4, '#FCE4EC');
-      grad.addColorStop(0.7, '#F8E8F0');
-      grad.addColorStop(1, '#FFF5F7');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, W, H);
-
-      // Scattered confetti dots
-      const rng = seededRandom(42);
-      const dotColors = ['#FDA4AF80','#F9A8D480','#C084FC60','#67E8F960','#FCD34D50','#86EFAC50'];
-      for (let i = 0; i < 60; i++) {
-        const dx = rng() * W, dy = rng() * H, dr = 2 + rng() * 5;
-        ctx.beginPath();
-        ctx.arc(dx, dy, dr, 0, Math.PI * 2);
-        ctx.fillStyle = dotColors[Math.floor(rng() * dotColors.length)];
-        ctx.fill();
-      }
-
-      // Light border inner frame
+    // ── Art Deco Geometric Frame ───────────────────────────────────────────────
+    function drawGeometricFrame(ctx, W, H, color, opts) {
+      const o = Object.assign({ alpha: 0.85, outerPad: 10, lineW: 2, cornerLen: 38, innerGap: 7, diamond: true, midTicks: true }, opts);
+      const p = o.outerPad;
       ctx.save();
-      roundRect(ctx, 12, 12, W - 24, H - 24, 20);
-      ctx.strokeStyle = 'rgba(244, 114, 182, 0.2)';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.restore();
+      ctx.strokeStyle = color;
+      ctx.fillStyle   = color;
 
-      const PAD = 30, GAP = 18;
-      const slotW = W - PAD * 2, slotH = Math.round((H - PAD * 2 - GAP * 2 - 56) / 3);
-      [0, 1, 2].forEach(i => {
-        const x = PAD, y = PAD + i * (slotH + GAP);
-        // White photo frame
-        ctx.save();
-        ctx.shadowColor = 'rgba(0,0,0,0.06)';
-        ctx.shadowBlur = 8;
-        ctx.shadowOffsetY = 3;
-        roundRect(ctx, x - 4, y - 4, slotW + 8, slotH + 8, 16);
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fill();
-        ctx.restore();
-        drawImageCover(ctx, pbImages[i], x, y, slotW, slotH, 12);
+      // ── Outer border line
+      ctx.globalAlpha = o.alpha;
+      ctx.lineWidth   = o.lineW;
+      ctx.strokeRect(p, p, W - p * 2, H - p * 2);
+
+      // ── Inner border line
+      ctx.lineWidth   = o.lineW * 0.55;
+      ctx.globalAlpha = o.alpha * 0.55;
+      const ip = p + o.innerGap;
+      ctx.strokeRect(ip, ip, W - ip * 2, H - ip * 2);
+
+      // ── Corner bracket ornaments
+      const cl = o.cornerLen;
+      const corners = [
+        [p, p,         1,  1],
+        [W - p, p,    -1,  1],
+        [p, H - p,     1, -1],
+        [W - p, H - p,-1, -1]
+      ];
+      ctx.lineWidth   = o.lineW * 1.15;
+      ctx.globalAlpha = o.alpha;
+      corners.forEach(([cx, cy, dx, dy]) => {
+        // Outer L-bracket
+        ctx.beginPath();
+        ctx.moveTo(cx + dx * cl, cy);
+        ctx.lineTo(cx, cy);
+        ctx.lineTo(cx, cy + dy * cl);
+        ctx.stroke();
+
+        // Inner parallel bracket (offset inside)
+        const off = o.innerGap + 1;
+        ctx.lineWidth = o.lineW * 0.7;
+        ctx.globalAlpha = o.alpha * 0.6;
+        ctx.beginPath();
+        ctx.moveTo(cx + dx * (cl - off * 1.5), cy + dy * off);
+        ctx.lineTo(cx + dx * off, cy + dy * off);
+        ctx.lineTo(cx + dx * off, cy + dy * (cl - off * 1.5));
+        ctx.stroke();
+        ctx.lineWidth   = o.lineW * 1.15;
+        ctx.globalAlpha = o.alpha;
+
+        // Diamond dot at corner point
+        if (o.diamond) {
+          const d = 4.5;
+          ctx.globalAlpha = o.alpha;
+          ctx.beginPath();
+          ctx.moveTo(cx,         cy - dy * d);
+          ctx.lineTo(cx + dx * d, cy);
+          ctx.lineTo(cx,         cy + dy * d);
+          ctx.lineTo(cx - dx * d, cy);
+          ctx.closePath();
+          ctx.fill();
+        }
       });
 
-      // Bottom label
-      ctx.save();
-      ctx.font = 'bold 16px "Playfair Display", serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillStyle = '#DB2777';
-      ctx.globalAlpha = 0.7;
-      ctx.fillText('♡  Barakallah Fii Umrik  ♡', W / 2, H - 16);
-      ctx.globalAlpha = 1;
+      // ── Mid-side small chevrons
+      if (o.midTicks) {
+        const mids = [
+          [W / 2, p,      0,  1],
+          [W / 2, H - p,  0, -1],
+          [p,     H / 2,  1,  0],
+          [W - p, H / 2, -1,  0]
+        ];
+        const tk = 8;
+        ctx.lineWidth   = o.lineW * 0.85;
+        ctx.globalAlpha = o.alpha * 0.75;
+        mids.forEach(([mx, my, nx, ny]) => {
+          // perpendicular tick
+          ctx.beginPath();
+          ctx.moveTo(mx - ny * tk, my - nx * tk);
+          ctx.lineTo(mx + ny * tk, my + nx * tk);
+          ctx.stroke();
+          // inset tick
+          const ins = o.innerGap + 2;
+          ctx.beginPath();
+          ctx.moveTo(mx + nx * ins - ny * (tk - 3), my + ny * ins - nx * (tk - 3));
+          ctx.lineTo(mx + nx * ins + ny * (tk - 3), my + ny * ins + nx * (tk - 3));
+          ctx.stroke();
+          // centre diamond
+          const d = 3.5;
+          ctx.globalAlpha = o.alpha * 0.9;
+          ctx.beginPath();
+          ctx.moveTo(mx,       my - d);
+          ctx.lineTo(mx + d,   my);
+          ctx.lineTo(mx,       my + d);
+          ctx.lineTo(mx - d,   my);
+          ctx.closePath();
+          ctx.fill();
+        });
+      }
+
       ctx.restore();
     }
 
-    // ── Template 2: CLASSIC WITH FLOWER ───────────────────────────────────────
-    function drawTemplate2(ctx, W, H) {
-      // Warm cream/ivory background
-      const grad = ctx.createLinearGradient(0, 0, W, H);
-      grad.addColorStop(0, '#FFFEF5');
-      grad.addColorStop(0.5, '#FFF8E7');
-      grad.addColorStop(1, '#FFF5E1');
-      ctx.fillStyle = grad;
+    // ── Template 1: SWEET PINK 4-GRID (Native Canvas Vector & Art Deco Frame) ─
+    function drawTemplate1(ctx, W, H) {
+      // 1. Soft blush pink gradient background
+      const bg = ctx.createLinearGradient(0, 0, W, H);
+      bg.addColorStop(0,   '#FFF5F8');
+      bg.addColorStop(0.3, '#FFE9F1');
+      bg.addColorStop(0.7, '#FFF0F6');
+      bg.addColorStop(1,   '#FFF8FA');
+      ctx.fillStyle = bg;
       ctx.fillRect(0, 0, W, H);
 
-      // Gold ornamental double border
+      // Radial warm rose glow in centre
+      const glow = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W * 0.75);
+      glow.addColorStop(0,   'rgba(244, 63, 94, 0.12)');
+      glow.addColorStop(0.6, 'rgba(244, 63, 94, 0.04)');
+      glow.addColorStop(1,   'rgba(255, 255, 255, 0)');
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, W, H);
+
+      // 2. Subtle pastel dot-lace watermark
       ctx.save();
-      roundRect(ctx, 10, 10, W - 20, H - 20, 18);
-      ctx.strokeStyle = 'rgba(180, 140, 80, 0.3)';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      roundRect(ctx, 16, 16, W - 32, H - 32, 14);
-      ctx.strokeStyle = 'rgba(180, 140, 80, 0.15)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
+      for (let row = 0; row < H; row += 24) {
+        for (let col = 0; col < W; col += 24) {
+          ctx.beginPath();
+          ctx.arc(col + (row % 48 === 0 ? 12 : 0), row, 1.2, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(244, 63, 94, 0.07)';
+          ctx.fill();
+        }
+      }
       ctx.restore();
 
-      // Scattered rose-gold dots
-      const rng = seededRandom(77);
-      for (let i = 0; i < 45; i++) {
-        const dx = rng() * W, dy = rng() * H, dr = 1 + rng() * 3;
-        ctx.beginPath();
-        ctx.arc(dx, dy, dr, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(180,140,80,${0.06 + rng() * 0.1})`;
-        ctx.fill();
-      }
+      // 3. Top Header Strip
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.font = '700 13px "Playfair Display", serif';
+      ctx.fillStyle = '#E11D48';
+      ctx.letterSpacing = '2px';
+      ctx.fillText('🌸 ────  SWEET MEMORIES  ──── 🌸', W / 2, 42);
+      ctx.restore();
 
-      const PAD = 32, GAP = 18;
-      const slotW = W - PAD * 2, slotH = Math.round((H - PAD * 2 - GAP * 2 - 64) / 3);
-      [0, 1, 2].forEach(i => {
-        const x = PAD, y = PAD + i * (slotH + GAP);
-        // Elegant thin gold frame
+      // 4. 4 Photo Slots (2x2 Grid)
+      const slotW = 286;
+      const slotH = 370;
+      const leftColX  = 54;
+      const rightColX = W - leftColX - slotW;
+      const topRowY   = 68;
+      const botRowY   = 484;
+
+      const slotCoords = [
+        { x: leftColX,  y: topRowY, w: slotW, h: slotH, emojis: ['🌸', '🎀'] },
+        { x: rightColX, y: topRowY, w: slotW, h: slotH, emojis: ['✨', '💖'] },
+        { x: leftColX,  y: botRowY, w: slotW, h: slotH, emojis: ['🌷', '💫'] },
+        { x: rightColX, y: botRowY, w: slotW, h: slotH, emojis: ['🍰', '🎈'] }
+      ];
+
+      slotCoords.forEach((slot, idx) => {
+        // Drop shadow for photo card
         ctx.save();
-        ctx.shadowColor = 'rgba(120,90,40,0.08)';
-        ctx.shadowBlur = 6;
-        ctx.shadowOffsetY = 2;
-        roundRect(ctx, x - 5, y - 5, slotW + 10, slotH + 10, 14);
+        ctx.shadowColor = 'rgba(244, 63, 94, 0.18)';
+        ctx.shadowBlur = 12;
+        ctx.shadowOffsetY = 4;
+
+        // White polaroid card base
         ctx.fillStyle = '#FFFFFF';
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(slot.x, slot.y, slot.w, slot.h, 12);
+        else ctx.rect(slot.x, slot.y, slot.w, slot.h);
         ctx.fill();
-        roundRect(ctx, x - 5, y - 5, slotW + 10, slotH + 10, 14);
-        ctx.strokeStyle = 'rgba(180,140,80,0.25)';
+        ctx.restore();
+
+        // Inner photo frame border
+        ctx.save();
+        ctx.strokeStyle = 'rgba(244, 63, 94, 0.45)';
         ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(slot.x, slot.y, slot.w, slot.h, 12);
+        else ctx.rect(slot.x, slot.y, slot.w, slot.h);
         ctx.stroke();
         ctx.restore();
-        drawImageCover(ctx, pbImages[i], x, y, slotW, slotH, 10);
+
+        // Photo slot area inside the white polaroid border
+        const innerPad = 7;
+        const innerX = slot.x + innerPad;
+        const innerY = slot.y + innerPad;
+        const innerW = slot.w - innerPad * 2;
+        const innerH = slot.h - innerPad * 2;
+
+        if (pbImages[idx]) {
+          drawImageCover(ctx, pbImages[idx], innerX, innerY, innerW, innerH, 8);
+        } else {
+          // Placeholder gradient
+          const pbg = ctx.createLinearGradient(innerX, innerY, innerX + innerW, innerY + innerH);
+          pbg.addColorStop(0, '#FFE8F0');
+          pbg.addColorStop(1, '#FFD3E2');
+          ctx.fillStyle = pbg;
+          ctx.beginPath();
+          if (ctx.roundRect) ctx.roundRect(innerX, innerY, innerW, innerH, 8);
+          else ctx.rect(innerX, innerY, innerW, innerH);
+          ctx.fill();
+
+          ctx.font = '28px serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('📷', innerX + innerW / 2, innerY + innerH / 2);
+        }
+
+        // Corner cute accents
+        ctx.save();
+        ctx.font = '14px serif';
+        ctx.fillText(slot.emojis[0], slot.x + 10, slot.y + 20);
+        ctx.textAlign = 'right';
+        ctx.fillText(slot.emojis[1], slot.x + slot.w - 10, slot.y + 20);
+        ctx.restore();
       });
 
-      // Flower decorations in corners
+      // 5. Delicate Middle Divider between Rows
+      const midY = (topRowY + slotH + botRowY) / 2;
       ctx.save();
-      ctx.font = '28px serif';
-      ctx.globalAlpha = 0.5;
-      ctx.fillText('🌸', 14, 38);
-      ctx.fillText('🌿', W - 42, 40);
-      ctx.fillText('🌷', 14, H - 14);
-      ctx.fillText('🍃', W - 42, H - 14);
-      ctx.globalAlpha = 1;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = '12px serif';
+      ctx.fillStyle = '#E11D48';
+      ctx.fillText('🌸 ────────  ୨♡୧  ──────── 🌸', W / 2, midY);
       ctx.restore();
 
-      // Elegant cursive label at bottom
+      // 6. Geometric Art Deco Frame Overlay (Rose-Gold)
+      drawGeometricFrame(ctx, W, H, 'rgba(225, 29, 72, 0.85)', {
+        alpha: 0.88, outerPad: 12, lineW: 2.2, cornerLen: 42, innerGap: 8, midTicks: true
+      });
+
+      // 7. Bottom Celebrant Greetings & Name
       ctx.save();
-      ctx.font = 'italic bold 17px "Playfair Display", serif';
       ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillStyle = '#A67B4A';
-      ctx.globalAlpha = 0.75;
-      ctx.fillText('✿  Barakallah Fii Umrik  ✿', W / 2, H - 14);
-      ctx.globalAlpha = 1;
+
+      // Title
+      ctx.font = 'bold 18px "Playfair Display", serif';
+      ctx.fillStyle = '#BE185D';
+      ctx.letterSpacing = '1px';
+      ctx.fillText('♡  Barakallah Fii Umrik  ♡', W / 2, 915);
+
+      // Celebrant Name
+      ctx.font = '700 32px "Caveat", cursive';
+      ctx.fillStyle = '#9F1239';
+      ctx.fillText(birthdayData.name, W / 2, 952);
+
+      // Subtitle
+      ctx.font = '600 12px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = '#BE185D';
+      ctx.globalAlpha = 0.85;
+      ctx.fillText(`Spesial Milad Ke-${birthdayData.age} • 4-Grid Sweet Memories`, W / 2, 980);
       ctx.restore();
     }
 
-    // ── Template 3: GLAZY DARK / ELEGANT ──────────────────────────────────────
-    function drawTemplate3(ctx, W, H) {
-      // Deep navy-to-dark gradient
+    // ── Template 2: BLOOM & PETAL (Lush Watercolor Floral 3-Grid Strip) ────────
+    function drawTemplate2(ctx, W, H, PAD_X, PAD_TOP, GAP, slotW, slotH) {
+      // 1. Warm gold-orange watercolor background
+      const bg = ctx.createLinearGradient(0, 0, W, H);
+      bg.addColorStop(0,   '#FFFBF0');
+      bg.addColorStop(0.3, '#FFF3D0');
+      bg.addColorStop(0.6, '#FFF8E8');
+      bg.addColorStop(1,   '#FFFCF2');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, W, H);
+
+      // Warm radial glow in centre
+      const glow = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W * 0.7);
+      glow.addColorStop(0,   'rgba(255,200,80,0.20)');
+      glow.addColorStop(0.6, 'rgba(255,200,80,0.07)');
+      glow.addColorStop(1,   'rgba(255,255,255,0)');
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, W, H);
+
+      // 2. Subtle dot-lace watermark pattern
+      const rng = seededRandom(77);
+      ctx.save();
+      for (let row = 0; row < H; row += 22) {
+        for (let col = 0; col < W; col += 22) {
+          ctx.beginPath();
+          ctx.arc(col + (row % 44 === 0 ? 11 : 0), row, 1.2, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(200,140,30,0.09)';
+          ctx.fill();
+        }
+      }
+      ctx.restore();
+
+      // 3. Scattered background flora (behind everything)
+      const bgFlora = ['🌼','🌻','🌺','🌸','🌾','🌿','🍃'];
+      ctx.save();
+      for (let i = 0; i < 28; i++) {
+        const fx = rng() * W;
+        const fy = rng() * H;
+        const em = bgFlora[Math.floor(rng() * bgFlora.length)];
+        const sz = 12 + rng() * 18;
+        ctx.font = `${Math.round(sz)}px sans-serif`;
+        ctx.globalAlpha = 0.10 + rng() * 0.14;
+        ctx.fillText(em, fx, fy);
+      }
+      ctx.restore();
+
+      // 4. Warm gold double border
+      ctx.save();
+      roundRect(ctx, 8, 8, W - 16, H - 16, 20);
+      ctx.strokeStyle = 'rgba(200,140,30,0.60)';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+      roundRect(ctx, 13, 13, W - 26, H - 26, 16);
+      ctx.strokeStyle = 'rgba(200,140,30,0.25)';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      ctx.restore();
+
+      // 5a. HEADER — large lush floral arch bouquet at top
+      ctx.save();
+      ctx.textAlign = 'center';
+      // Top-left & top-right corner clusters (large)
+      ctx.font = '28px sans-serif';
+      ctx.globalAlpha = 0.90;
+      ctx.textAlign = 'left';
+      ctx.fillText('🌼🌻🌺', 14, 38);
+      ctx.fillText('🍃🌿', 14, 62);
+      ctx.textAlign = 'right';
+      ctx.fillText('🌺🌻🌼', W - 14, 38);
+      ctx.fillText('🌿🍃', W - 14, 62);
+      ctx.restore();
+
+      // Header title text
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.font = 'italic bold 13px "Playfair Display", serif';
+      ctx.fillStyle = '#92400E';
+      ctx.globalAlpha = 0.9;
+      ctx.fillText('✿  Bloom & Petal  ✿', W / 2, 30);
+
+      // Decorative swash line
+      ctx.font = '11px serif';
+      ctx.fillStyle = '#D97706';
+      ctx.globalAlpha = 0.5;
+      ctx.fillText('— ❀ ❀ ❀ —', W / 2, 46);
+      ctx.restore();
+
+      // 5b. Left & right side large floral sprigs (running vertically)
+      const sideFlora = ['🌼','🌻','🌺','🌸','🍃','🌿','🌾','🌼'];
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      for (let i = 0; i < 7; i++) {
+        const em = sideFlora[i % sideFlora.length];
+        ctx.font = '22px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(em, 10, PAD_TOP + 20 + i * (slotH + GAP) / 2.8);
+        ctx.textAlign = 'right';
+        ctx.fillText(sideFlora[(i + 3) % sideFlora.length], W - 10, PAD_TOP + 20 + i * (slotH + GAP) / 2.8);
+      }
+      ctx.restore();
+
+      // 6. Photo Slots
+      [0, 1, 2].forEach(i => {
+        const x = PAD_X, y = PAD_TOP + i * (slotH + GAP);
+
+        // White matte card with gold shadow
+        ctx.save();
+        ctx.shadowColor = 'rgba(180,120,10,0.20)';
+        ctx.shadowBlur = 14;
+        ctx.shadowOffsetY = 4;
+        roundRect(ctx, x - 7, y - 7, slotW + 14, slotH + 14, 16);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fill();
+        ctx.restore();
+
+        // Outer gold border
+        ctx.save();
+        roundRect(ctx, x - 7, y - 7, slotW + 14, slotH + 14, 16);
+        ctx.strokeStyle = 'rgba(200,140,30,0.55)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        // Inner hairline
+        roundRect(ctx, x - 2, y - 2, slotW + 4, slotH + 4, 10);
+        ctx.strokeStyle = 'rgba(200,140,30,0.22)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.restore();
+
+        // Image
+        drawImageCover(ctx, pbImages[i], x, y, slotW, slotH, 9);
+
+        // Large corner floral accents per slot
+        ctx.save();
+        ctx.globalAlpha = 0.82;
+        const slotFl = [['🌼','🌻'],['🌺','🌸'],['🌾','🌿']];
+        ctx.font = '20px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(slotFl[i][0], x - 8, y + 22);
+        ctx.fillText(slotFl[i][0], x - 8, y + slotH - 6);
+        ctx.textAlign = 'right';
+        ctx.fillText(slotFl[i][1], x + slotW + 8, y + 22);
+        ctx.fillText(slotFl[i][1], x + slotW + 8, y + slotH - 6);
+        ctx.restore();
+
+        // Between-slot floral divider
+        if (i < 2) {
+          const divY = y + slotH + GAP / 2;
+          ctx.save();
+          ctx.textAlign = 'center';
+          ctx.font = '18px sans-serif';
+          ctx.globalAlpha = 0.75;
+          ctx.fillText('🌼  ✿  🌼', W / 2, divY + 6);
+          ctx.restore();
+        }
+      });
+
+      // 7b. Geometric Art Deco frame overlay (gold)
+      drawGeometricFrame(ctx, W, H, 'rgba(180,120,15,1)', {
+        alpha: 0.72, outerPad: 9, lineW: 2, cornerLen: 40, innerGap: 7
+      });
+      // 7. Bottom — large lush bouquet + celebrant text
+      ctx.save();
+      ctx.textAlign = 'center';
+
+      // Large bottom floral clusters
+      ctx.font = '26px sans-serif';
+      ctx.globalAlpha = 0.9;
+      ctx.textAlign = 'left';
+      ctx.fillText('🌿🌼🌻', 14, H - 50);
+      ctx.fillText('🍃🌾', 14, H - 24);
+      ctx.textAlign = 'right';
+      ctx.fillText('🌻🌼🌿', W - 14, H - 50);
+      ctx.fillText('🌾🍃', W - 14, H - 24);
+
+      // Title line
+      ctx.globalAlpha = 1;
+      ctx.textAlign = 'center';
+      ctx.font = 'bold 15px "Playfair Display", serif';
+      ctx.fillStyle = '#92400E';
+      ctx.shadowColor = 'rgba(146,64,14,0.28)';
+      ctx.shadowBlur = 6;
+      ctx.fillText('✿  Barakallah Fii Umrik  ✿', W / 2, H - 50);
+      ctx.shadowBlur = 0;
+
+      // Name & age
+      ctx.font = '700 14px "Caveat", cursive';
+      ctx.fillStyle = '#B45309';
+      ctx.fillText(`${birthdayData.name}  •  Milad Ke-${birthdayData.age}`, W / 2, H - 30);
+
+      // Small date note
+      ctx.font = '500 10px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = '#D97706';
+      ctx.globalAlpha = 0.65;
+      ctx.fillText('Spesial Milad • Bloom & Petal Memory', W / 2, H - 13);
+      ctx.restore();
+    }
+
+    // ── Template 3: GLAZY DARK / ELEGANT (Midnight Celestial & Gold Floral) ───
+    function drawTemplate3(ctx, W, H, PAD_X, PAD_TOP, GAP, slotW, slotH) {
+      // 1. Deep navy-to-midnight obsidian gradient
       const grad = ctx.createLinearGradient(0, 0, W * 0.3, H);
-      grad.addColorStop(0, '#0B0E1A');
-      grad.addColorStop(0.3, '#111936');
-      grad.addColorStop(0.7, '#0D1B3E');
-      grad.addColorStop(1, '#080C18');
+      grad.addColorStop(0, '#070A14');
+      grad.addColorStop(0.35, '#0F172A');
+      grad.addColorStop(0.75, '#0C1226');
+      grad.addColorStop(1, '#060912');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, W, H);
 
-      // Sparkle particles
+      // 2. Motif: Celestial star chart & circular golden mandala lines
+      ctx.save();
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.08)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(W / 2, 0, 160, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(W / 2, 0, 120, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(W / 2, H, 180, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(W / 2, H, 140, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+
+      // 3. Motif: Shimmering golden stardust & celestial elements
       const rng = seededRandom(99);
-      for (let i = 0; i < 80; i++) {
+      for (let i = 0; i < 75; i++) {
         const sx = rng() * W, sy = rng() * H;
-        const sr = 0.5 + rng() * 2.5;
-        const alpha = 0.15 + rng() * 0.5;
+        const sr = 0.6 + rng() * 2.2;
+        const alpha = 0.15 + rng() * 0.55;
         ctx.beginPath();
         ctx.arc(sx, sy, sr, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(212, 175, 55, ${alpha})`;
         ctx.fill();
       }
 
-      // Larger glow orbs
-      for (let i = 0; i < 8; i++) {
+      // Golden bokeh glow orbs
+      for (let i = 0; i < 7; i++) {
         const ox = rng() * W, oy = rng() * H;
-        const or2 = 10 + rng() * 30;
+        const or2 = 12 + rng() * 32;
         const glow = ctx.createRadialGradient(ox, oy, 0, ox, oy, or2);
-        glow.addColorStop(0, 'rgba(212, 175, 55, 0.08)');
+        glow.addColorStop(0, 'rgba(212, 175, 55, 0.12)');
         glow.addColorStop(1, 'rgba(212, 175, 55, 0)');
         ctx.fillStyle = glow;
         ctx.fillRect(ox - or2, oy - or2, or2 * 2, or2 * 2);
       }
 
-      // Gold border
+      // Celestial & gold botanical flora scattered
+      const celestialIcons = ['🌾', '🍂', '✨', '⭐', '💫', '🌙'];
       ctx.save();
-      roundRect(ctx, 8, 8, W - 16, H - 16, 16);
-      ctx.strokeStyle = 'rgba(212, 175, 55, 0.35)';
+      for (let i = 0; i < 20; i++) {
+        const cx = rng() * (W - 30) + 15;
+        const cy = rng() * (H - 40) + 20;
+        const cIcon = celestialIcons[Math.floor(rng() * celestialIcons.length)];
+        ctx.font = `${Math.round(10 + rng() * 10)}px sans-serif`;
+        ctx.globalAlpha = 0.25 + rng() * 0.35;
+        ctx.fillText(cIcon, cx, cy);
+      }
+      ctx.restore();
+
+      // 4. Metallic Gold Double Border
+      ctx.save();
+      roundRect(ctx, 10, 10, W - 20, H - 20, 18);
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.5)';
       ctx.lineWidth = 2;
+      ctx.stroke();
+
+      roundRect(ctx, 15, 15, W - 30, H - 30, 14);
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.22)';
+      ctx.lineWidth = 1;
       ctx.stroke();
       ctx.restore();
 
-      const PAD = 28, GAP = 16;
-      const slotW = W - PAD * 2, slotH = Math.round((H - PAD * 2 - GAP * 2 - 56) / 3);
-      [0, 1, 2].forEach(i => {
-        const x = PAD, y = PAD + i * (slotH + GAP);
-        // Subtle gold frame around photo
-        ctx.save();
-        roundRect(ctx, x - 3, y - 3, slotW + 6, slotH + 6, 14);
-        ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-        ctx.restore();
-        drawImageCover(ctx, pbImages[i], x, y, slotW, slotH, 12);
-      });
-
-      // Gold corner ornaments
+      // 5. Corner Ornaments & Celestial Header
       ctx.save();
-      ctx.font = '14px serif';
+      ctx.font = '16px serif';
       ctx.fillStyle = '#D4AF37';
-      ctx.globalAlpha = 0.6;
-      ctx.fillText('✦', 16, 24);
-      ctx.fillText('✦', W - 26, 24);
-      ctx.fillText('✦', 16, H - 12);
-      ctx.fillText('✦', W - 26, H - 12);
-      ctx.globalAlpha = 1;
+      ctx.textAlign = 'left';
+      ctx.fillText('✦ 🌙', 18, 34);
+      ctx.textAlign = 'right';
+      ctx.fillText('🌾 ✦', W - 18, 34);
+      ctx.fillText('⭐ ✦', W - 18, H - 18);
+      ctx.textAlign = 'left';
+      ctx.fillText('🌾 ✧', 18, H - 18);
+
+      ctx.font = 'bold 11px "Playfair Display", serif';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#D4AF37';
+      ctx.fillText('✦  M I L A D   M U B A R A K  ✦', W / 2, 32);
       ctx.restore();
 
-      // Gold label at bottom
+      // 6. Photo Slots
+      [0, 1, 2].forEach(i => {
+        const x = PAD_X, y = PAD_TOP + i * (slotH + GAP);
+
+        // Sleek obsidian card with golden frame
+        ctx.save();
+        ctx.shadowColor = 'rgba(212, 175, 55, 0.2)';
+        ctx.shadowBlur = 12;
+        ctx.shadowOffsetY = 3;
+        roundRect(ctx, x - 5, y - 5, slotW + 10, slotH + 10, 14);
+        ctx.fillStyle = '#090D18';
+        ctx.fill();
+
+        roundRect(ctx, x - 5, y - 5, slotW + 10, slotH + 10, 14);
+        ctx.strokeStyle = 'rgba(212, 175, 55, 0.45)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        roundRect(ctx, x - 2, y - 2, slotW + 4, slotH + 4, 10);
+        ctx.strokeStyle = 'rgba(212, 175, 55, 0.2)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.restore();
+
+        // Image
+        drawImageCover(ctx, pbImages[i], x, y, slotW, slotH, 8);
+
+        // Corner star rivets & botanical touches
+        ctx.save();
+        ctx.font = '12px serif';
+        ctx.fillStyle = '#D4AF37';
+        if (i === 0) {
+          ctx.fillText('✦', x + 6, y + 16);
+          ctx.textAlign = 'right';
+          ctx.fillText('🌾', x + slotW - 6, y + 16);
+        } else if (i === 1) {
+          ctx.fillText('🌙', x + 6, y + slotH / 2);
+          ctx.textAlign = 'right';
+          ctx.fillText('✦', x + slotW - 6, y + slotH / 2);
+        } else {
+          ctx.fillText('🌾', x + 6, y + slotH - 6);
+          ctx.textAlign = 'right';
+          ctx.fillText('⭐', x + slotW - 6, y + slotH - 6);
+        }
+        ctx.restore();
+
+        // Celestial divider between slots
+        if (i < 2) {
+          const divY = y + slotH + GAP / 2;
+          ctx.save();
+          ctx.font = '11px serif';
+          ctx.fillStyle = '#D4AF37';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('✦ ───────── ✧ ───────── ✦', W / 2, divY);
+          ctx.restore();
+        }
+      });
+
+      // 7b. Geometric Art Deco frame overlay (bright gold on dark)
+      drawGeometricFrame(ctx, W, H, 'rgba(212,175,55,1)', {
+        alpha: 0.88, outerPad: 10, lineW: 2.2, cornerLen: 42, innerGap: 8
+      });
+
+      // 7. Bottom Watermark & Celebrant Name
       ctx.save();
-      ctx.font = 'bold 15px "Playfair Display", serif';
       ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillStyle = '#D4AF37';
-      ctx.globalAlpha = 0.8;
-      ctx.fillText('✦  Barakallah Fii Umrik  ✦', W / 2, H - 14);
-      ctx.globalAlpha = 1;
+      // Title
+      ctx.font = 'bold 16px "Playfair Display", serif';
+      ctx.fillStyle = '#F59E0B';
+      ctx.shadowColor = 'rgba(245, 158, 11, 0.4)';
+      ctx.shadowBlur = 8;
+      ctx.fillText('✦  Barakallah Fii Umrik  ✦', W / 2, H - 42);
+      ctx.shadowBlur = 0;
+
+      // Celebrant name
+      ctx.font = 'italic 13px "Playfair Display", serif';
+      ctx.fillStyle = '#E5C158';
+      ctx.fillText(`${birthdayData.name} • Milad Ke-${birthdayData.age}`, W / 2, H - 22);
+
+      // Date subtitle
+      ctx.font = '500 10px sans-serif';
+      ctx.fillStyle = 'rgba(212, 175, 55, 0.75)';
+      ctx.fillText('Midnight Celestial • Special Memories', W / 2, H - 9);
       ctx.restore();
     }
 
@@ -1760,20 +2491,29 @@
       const ctx    = canvas.getContext('2d');
       const tpl    = pbCurrentTemplate;
 
-      // All 3 templates: vertical strip, 3 photos stacked, different frame styles
-      // Canvas size: photo booth strip (portrait)
-      const W = 480;
-      const slotH = Math.round(W * 0.75); // ~3:4 per slot
-      const PAD = (tpl === 2) ? 32 : 28;
-      const GAP = (tpl === 2) ? 18 : 16;
-      const LABEL_H = 56;
-      const H = PAD * 2 + slotH * 3 + GAP * 2 + LABEL_H;
-      canvas.width = W;
-      canvas.height = H;
+      if (tpl === 1) {
+        // Template 1: 4-Grid Sweet Pink Memory (Native Canvas Vector & Art Deco)
+        const W = 720;
+        const H = 1009;
+        canvas.width = W;
+        canvas.height = H;
+        drawTemplate1(ctx, W, H);
+      } else {
+        // Template 2 & 3: Vertical 3-Photo Strip
+        const W = 500;
+        const PAD_X = 38;
+        const PAD_TOP = 72;
+        const GAP = 24;
+        const slotW = W - PAD_X * 2;
+        const slotH = Math.round(slotW * 0.72);
+        const LABEL_H = 92;
+        const H = PAD_TOP + slotH * 3 + GAP * 2 + LABEL_H;
+        canvas.width = W;
+        canvas.height = H;
 
-      if (tpl === 1) drawTemplate1(ctx, W, H);
-      else if (tpl === 2) drawTemplate2(ctx, W, H);
-      else if (tpl === 3) drawTemplate3(ctx, W, H);
+        if (tpl === 2) drawTemplate2(ctx, W, H, PAD_X, PAD_TOP, GAP, slotW, slotH);
+        else if (tpl === 3) drawTemplate3(ctx, W, H, PAD_X, PAD_TOP, GAP, slotW, slotH);
+      }
 
       // Show preview
       const preview = document.getElementById('pb-preview-section');
@@ -1783,16 +2523,74 @@
     }
 
     function downloadPhotoBooth() {
-      const canvas = document.getElementById('pb-canvas');
-      const link   = document.createElement('a');
-      link.download = `photo-booth-kenangan-${Date.now()}.png`;
-      link.href     = canvas.toDataURL('image/png');
-      link.click();
-      triggerMiniHeartConfetti(document.getElementById('pb-download-btn'));
-    }
+      const canvas   = document.getElementById('pb-canvas');
+      const filename = `photo-booth-kenangan-${Date.now()}.png`;
+      const celebrate = () => {
+        if (typeof triggerRealisticConfetti === 'function') triggerRealisticConfetti();
+      };
 
+      // Primary: blob-based download (avoids data-URL size limits & canvas-taint issues)
+      try {
+        canvas.toBlob(blob => {
+          if (!blob) { fallbackDownload(); return; }
+          const url  = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.download = filename;
+          link.href = url;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          setTimeout(() => URL.revokeObjectURL(url), 2000);
+          celebrate();
+        }, 'image/png');
+      } catch(e) {
+        fallbackDownload();
+      }
+
+      function fallbackDownload() {
+        try {
+          const dataUrl = canvas.toDataURL('image/png');
+          const link    = document.createElement('a');
+          link.download  = filename;
+          link.href      = dataUrl;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          celebrate();
+        } catch(e2) {
+          // Last resort: open canvas in new tab for manual save
+          const win = window.open('', '_blank');
+          if (win) {
+            win.document.write('<title>Photo Booth</title><body style="margin:0;background:#111"><img src="' + canvas.toDataURL() + '" style="max-width:100%"><p style="color:#fff;font-family:sans-serif;text-align:center">Klik kanan gambar → Simpan Gambar</p></body>');
+          } else {
+            alert('⚠️ Browser memblokir download. Klik kanan pada hasil foto dan pilih "Simpan Gambar".');
+          }
+        }
+      }
+    }
     // Activate template 1 on init
     selectPhotoBoothTemplate(1);
+
+    // Sync mobile template slider on horizontal swipe
+    (function initMobileSliderSync() {
+      const picker = document.getElementById('pb-template-picker');
+      if (!picker) return;
+      let scrollTimeout;
+      picker.addEventListener('scroll', () => {
+        if (window.innerWidth >= 640) return;
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          const card = picker.querySelector('.pb-tpl-btn');
+          if (!card) return;
+          const cardWidth = card.offsetWidth + 16;
+          const idx = Math.round(picker.scrollLeft / cardWidth) + 1;
+          const target = Math.max(1, Math.min(3, idx));
+          if (target !== pbCurrentTemplate) {
+            selectPhotoBoothTemplate(target);
+          }
+        }, 100);
+      }, { passive: true });
+    })();
 
   </script>
 
