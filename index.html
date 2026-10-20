@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barakallah Fii Umrik - Online Birthday Celebration</title>
+  <meta name="description"
+    content="Online Birthday Gift & Celebration interaktif dengan Before/After Mosaic, Makna Nama Akrostik, Time Capsule Doa, dan Virtual Sticky Notes Wall.">
+
+  <!-- Google Fonts: Plus Jakarta Sans & Playfair Display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Caveat:wght@600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+            handwriting: ['"Caveat"', 'cursive'],
+          },
+          colors: {
+            pastel: {
+              cream: '#FFFDF9',
+              rose: '#FFE5EC',
+              blush: '#F8D7DA',
+              peach: '#FFE8D6',
+              mint: '#E2F0D9',
+              sky: '#E0F2FE',
+              lavender: '#EDE9FE',
+              yellow: '#FEF9C3',
+            },
+            softslate: '#2D3748',
+          },
+          boxShadow: {
+            'brutal-sm': '3px 3px 0px 0px rgba(45, 55, 72, 0.08)',
+            'brutal': '5px 5px 0px 0px rgba(45, 55, 72, 0.09)',
+            'brutal-lg': '8px 8px 0px 0px rgba(45, 55, 72, 0.1)',
+            'brutal-hover': '7px 7px 0px 0px rgba(45, 55, 72, 0.15)',
+            'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Background Mesh & Aura */
+    body {
+      background: linear-gradient(135deg, #FFFDF9 0%, #FFF5F7 35%, #F5F7FB 70%, #FAF5FF 100%);
+      background-attachment: fixed;
+      color: #2D3748;
+      overflow-x: hidden;
+    }
+
+    /* Glassmorphism Classes */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+    }
+
+    .glass-card-subtle {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    /* Soft Neobrutalism Border & Pill */
+    .brutal-border {
+      border: 2px solid rgba(45, 55, 72, 0.12);
+    }
+
+    .brutal-border-strong {
+      border: 2px solid rgba(45, 55, 72, 0.22);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #FFFDF9;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #E2E8F0;
+      border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #CBD5E1;
+    }
+
+    /* Before/After Slider specific styling */
+    .slider-container {
+      position: relative;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: pan-y;
+    }
+
+    /* Washi tape effect on sticky notes */
+    .washi-tape {
+      background: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+      backdrop-filter: blur(2px);
+      border-left: 2px dashed rgba(200, 200, 200, 0.4);
+      border-right: 2px dashed rgba(200, 200, 200, 0.4);
+    }
+
+    /* Typing cursor */
+    .typing-cursor::after {
+      content: '|';
+      animation: blink 1s step-start infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    /* Floating particles */
+    @keyframes float-gentle {
+
+      0%,
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-8px) rotate(3deg);
+      }
+    }
+
+    .floating-badge {
+      animation: float-gentle 4s ease-in-out infinite;
+    }
+
+    .floating-badge-delayed {
+      animation: float-gentle 4.5s ease-in-out infinite 1.5s;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen text-slate-800 antialiased selection:bg-pink-200 selection:text-pink-900">
+
+  <!-- Ambient Light Accents (Decorative Background Glows) -->
+  <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+    <div class="absolute -top-32 -left-32 w-96 h-96 bg-pink-200/40 rounded-full blur-3xl"></div>
+    <div class="absolute top-1/3 -right-32 w-96 h-96 bg-amber-100/50 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-20 left-1/4 w-[30rem] h-[30rem] bg-purple-100/40 rounded-full blur-3xl"></div>
+  </div>
+
+  <!-- Minimalist Floating Top Header -->
+  <header class="sticky top-4 z-40 px-4 max-w-4xl mx-auto">
+    <div
+      class="glass-card brutal-border rounded-full px-5 py-3 shadow-brutal flex items-center justify-between transition-all">
+      <div class="flex items-center space-x-2">
+        <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse inline-block"></span>
+        <span id="navCelebrantName" class="font-bold text-sm tracking-wide text-slate-800">Birthday Celebration</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="navConfettiBtn"
+          class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-pink-100/80 hover:bg-pink-200 text-pink-700 rounded-full transition-all duration-200 hover:scale-105 active:scale-95 brutal-border">
+          <span>🎉</span>
+          <span class="hidden sm:inline">Letupkan Confetti</span>
+        </button>
+        <a href="#section-sticky-wall"
+          class="px-3 py-1.5 text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 rounded-full transition-all brutal-border shadow-brutal-sm">
+          ✍️ Titip Doa
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WRAPPER (Mobile First, Max-W-4xl Centered for Intimate Aesthetic) -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 pt-6 pb-24 space-y-16 sm:space-y-24">
+
+    <!-- ================================================================= -->
+    <!-- SECTION 1: HERO SECTION -->
+    <!-- ================================================================= -->
+    <section id="section-hero" class="relative pt-4 sm:pt-8 text-center flex flex-col items-center">
+
+      <!-- Age Badge Pill -->
+      <div
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card brutal-border shadow-brutal-sm mb-6 floating-badge">
+        <span class="flex h-2.5 w-2.5 relative">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-pink-500"></span>
+        </span>
+        <span id="heroAgeBadge" class="text-xs sm:text-sm font-bold tracking-wide text-slate-700">
+          Celebrating 23 Years of Life & Joy ✨
+        </span>
+      </div>
+
+      <!-- Main Heading with Typing Effect -->
+      <div class="space-y-3 mb-8">
+        <h1
+          class="text-3xl sm:text-5xl md:text-6xl font-serif font-extrabold text-slate-900 tracking-tight leading-tight">
+          <span id="heroTypingText"
+            class="typing-cursor bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-pink-700 to-amber-700"></span>
+        </h1>
+        <p id="heroSubtitle" class="text-base sm:text-lg text-slate-600 max-w-xl mx-auto font-medium">
+          Selamat bertambah usia! Semoga langkahmu senantiasa dipenuhi keberkahan, kesehatan, dan senyum yang tak pernah
+          pudar.
+        </p>
+      </div>
+
+      <!-- Hero Image: 3/4 Portrait in Neobrutalist Glass Card -->
+      <div class="relative w-full max-w-sm sm:max-w-md mx-auto group">
+        <!-- Decorative Offset Neobrutalist Shadow Box -->
+        <div
+          class="absolute inset-0 bg-pink-200/70 rounded-3xl transform translate-x-3 translate-y-3 sm:translate-x-4 sm:translate-y-4 brutal-border -z-10 transition-transform group-hover:translate-x-5 group-hover:translate-y-5">
+        </div>
+
+        <!-- Main Image Container -->
+        <div class="glass-card brutal-border rounded-3xl p-3 sm:p-4 shadow-brutal-lg overflow-hidden bg-white/85">
+          <div class="relative aspect-[3/4] w-full rounded-2xl overflow-hidden bg-slate-100 shadow-inner">
+            <img id="heroImageSrc" src="assets/foto-asli.jpg" alt="Hero Celebrant Portrait"
+              class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80';">
+
+            <!-- Subtle Image Gradient Bottom Overlay -->
+            <div
+              class="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/50 via-black/20 to-transparent flex items-end p-4">
+              <div class="text-left text-white drop-shadow">
+                <p id="heroCelebrantNameCard" class="font-serif text-lg sm:text-xl font-bold leading-tight">Nabila
+                  Auliana Sholiha</p>
+                <p id="heroBirthDateBadge" class="text-xs text-white/90 font-medium">Spesial Milad • 21 Oktober</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Decorative Badges -->
+        <div
+          class="absolute -bottom-4 -left-3 sm:-left-6 glass-card brutal-border rounded-2xl px-3.5 py-2 shadow-brutal-sm flex items-center gap-2 floating-badge">
+          <span class="text-lg">🎂</span>
+          <div class="text-left">
+            <p class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Milad Ke-</p>
+            <p id="heroAgeNumber" class="text-sm font-extrabold text-slate-800">23 Tahun</p>
+          </div>
+        </div>
+
+        <div
+          class="absolute -top-3 -right-3 sm:-right-5 glass-card brutal-border rounded-2xl px-3.5 py-2 shadow-brutal-sm flex items-center gap-2 floating-badge-delayed">
+          <span class="text-lg">🌸</span>
+          <div class="text-left">
+            <p class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Doa Terbaik</p>
+            <p class="text-sm font-extrabold text-pink-600">Selalu Bahagia</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Button: Trigger Confetti -->
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <button id="heroConfettiBtn"
+          class="px-6 py-3.5 rounded-full bg-slate-900 text-white font-bold text-sm tracking-wide shadow-brutal brutal-border hover:bg-slate-800 hover:-translate-y-1 active:translate-y-0 active:shadow-none transition-all duration-200 flex items-center gap-2">
+          <span>🎉</span>
+          <span>Letupkan Confetti</span>
+        </button>
+        <a href="#section-acrostic"
+          class="px-5 py-3.5 rounded-full glass-card brutal-border text-slate-700 font-bold text-sm tracking-wide shadow-brutal-sm hover:bg-white hover:-translate-y-0.5 transition-all flex items-center gap-2">
+          <span>✨</span>
+          <span>Baca Makna & Pesan</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- SECTION 2: NAMA LENGKAP & PARAGRAF PUITIS DENGAN HIGHLIGHT -->
+    <!-- ================================================================= -->
+    <section id="section-acrostic" class="relative space-y-6 scroll-mt-24">
+
+      <!-- Layout & Alignment: Nama Lengkap di Posisi Paling Atas dan di TENGAH (Center Align) -->
+      <div class="text-center">
+        <h2 id="sectionCelebrantFullName"
+          class="text-3xl sm:text-5xl md:text-6xl font-serif font-extrabold text-slate-900 tracking-tight leading-tight">
+          Nabila Auliana Sholiha
+        </h2>
+      </div>
+
+      <!-- Kartu Glassmorphism Rapi Berisi Paragraf Ucapan & Nasihat Panjang -->
+      <div
+        class="glass-card brutal-border rounded-3xl p-6 sm:p-10 shadow-brutal-lg relative overflow-hidden bg-white/85">
+        <!-- Subtle Decorative Quote Mark in Background -->
+        <div class="absolute -right-3 -bottom-6 text-slate-900/5 text-9xl font-serif select-none pointer-events-none">
+          ”
+        </div>
+
+        <div class="relative space-y-6">
+
+          <!-- Paragraf Panjang dengan Highlight Huruf & Kata -->
+          <div id="poeticParagraphContent"
+            class="text-sm sm:text-base md:text-[17px] text-slate-700 leading-relaxed sm:leading-loose space-y-5 font-normal text-justify sm:text-left">
+            <!-- Dynamically populated via birthdayData.poeticParagraph -->
+          </div>
+
+          <!-- Visual Name Tracker -->
+          <div
+            class="pt-5 border-t border-slate-200/70 flex flex-wrap items-center justify-center sm:justify-start gap-1.5 text-[11px] font-medium text-slate-500">
+            <span class="text-slate-400 font-semibold mr-1">Rangkaian Nama:</span>
+            <span class="px-2 py-0.5 rounded bg-amber-100/90 text-[#E06A26] font-bold font-serif">Na</span>
+            <span class="px-2 py-0.5 rounded bg-amber-100/90 text-[#E06A26] font-bold font-serif">Bi</span>
+            <span class="px-2 py-0.5 rounded bg-amber-100/90 text-[#E06A26] font-bold font-serif">La</span>
+            <span class="text-slate-300">•</span>
+            <span class="px-2 py-0.5 rounded bg-amber-100/90 text-[#E06A26] font-bold font-serif">Au</span>
+            <span class="px-2 py-0.5 rounded bg-amber-100/90 text-[#E06A26] font-bold font-serif">Li</span>
+            <span class="px-2 py-0.5 rounded bg-amber-100/90 text-[#E06A26] font-bold font-serif">Ana</span>
+            <span class="text-slate-300">•</span>
+            <span class="px-2 py-0.5 rounded bg-amber-100/90 text-[#E06A26] font-bold font-serif">S</span>
+            <span class="px-2 py-0.5 rounded bg-amber-100/90 text-[#E06A26] font-bold font-serif">h</span>
+            <span class="px-2 py-0.5 rounded bg-amber-100/90 text-[#E06A26] font-bold font-serif">O</span>
+            <span class="px-2 py-0.5 rounded bg-amber-100/90 text-[#E06A26] font-bold font-serif">li</span>
+            <span class="px-2 py-0.5 rounded bg-amber-100/90 text-[#E06A26] font-bold font-serif">Ha</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- SECTION 3: KARYA SENI MOZAIK (BEFORE / AFTER SLIDER) -->
+    <!-- ================================================================= -->
+    <section id="section-mosaic" class="relative space-y-6 scroll-mt-24">
+
+      <!-- Section Header -->
+      <div class="text-center space-y-2">
+        <span
+          class="text-xs font-bold uppercase tracking-widest text-amber-700 bg-amber-100/70 px-3 py-1 rounded-full brutal-border">
+          Karya Seni Spesial
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-serif font-bold text-slate-900">
+          Mozaik Bunga: Dari Potret Menjadi Mahakarya
+        </h2>
+        <p class="text-sm sm:text-base text-slate-600 max-w-lg mx-auto">
+          Geser garis slider di tengah ke kiri dan kanan untuk melihat metamorfosis foto asli menjadi susunan ribuan
+          helai kelopak bunga.
+        </p>
+      </div>
+
+      <!-- Interactive Before / After Slider Box -->
+      <div class="relative max-w-xl mx-auto">
+        <!-- Neobrutalist background shadow frame -->
+        <div
+          class="absolute inset-0 bg-amber-200/60 rounded-3xl transform translate-x-3 translate-y-3 sm:translate-x-4 sm:translate-y-4 brutal-border -z-10">
+        </div>
+
+        <div class="glass-card brutal-border rounded-3xl p-3 sm:p-4 shadow-brutal-lg bg-white/90">
+
+          <!-- Slider Component Container -->
+          <div id="beforeAfterSlider"
+            class="slider-container relative aspect-[3/4] w-full rounded-2xl overflow-hidden cursor-ew-resize shadow-md select-none touch-none bg-slate-900">
+
+            <!-- AFTER IMAGE: Mozaik Bunga (Base/Bottom Layer) -->
+            <img id="mosaicImageSrc" src="assets/mozaik-bunga.jpg" alt="Mozaik Bunga (Sesudah)"
+              class="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80';">
+
+            <!-- Badge: Mozaik Bunga (After) -->
+            <div class="absolute top-4 right-4 z-10 pointer-events-none">
+              <span
+                class="px-3 py-1 text-xs font-bold bg-white/85 backdrop-blur-md text-amber-900 rounded-full brutal-border shadow-sm flex items-center gap-1.5">
+                <span>🌸</span>
+                <span>Mozaik Bunga</span>
+              </span>
+            </div>
+
+            <!-- BEFORE IMAGE: Foto Asli (Top Layer with Clip Path) -->
+            <div id="beforeImageWrapper" class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none"
+              style="clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);">
+              <img id="originalImageSrc" src="assets/foto-asli.jpg" alt="Foto Asli (Sebelum)"
+                class="absolute inset-0 w-full h-full object-cover object-center"
+                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80';">
+
+              <!-- Badge: Foto Asli (Before) -->
+              <div class="absolute top-4 left-4 z-10">
+                <span
+                  class="px-3 py-1 text-xs font-bold bg-slate-900/80 backdrop-blur-md text-white rounded-full brutal-border shadow-sm flex items-center gap-1.5">
+                  <span>📷</span>
+                  <span>Foto Asli</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Draggable Divider Line & Knob Handle -->
+            <div id="sliderHandle"
+              class="absolute top-0 bottom-0 z-20 pointer-events-none flex items-center justify-center"
+              style="left: 50%; transform: translateX(-50%);">
+              <!-- Vertical Divider Line -->
+              <div class="w-1 h-full bg-white shadow-[0_0_10px_rgba(0,0,0,0.5)]"></div>
+
+              <!-- Circular Center Knob Button -->
+              <div
+                class="absolute w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white brutal-border-strong shadow-lg flex items-center justify-center text-slate-800 transition-transform active:scale-95 pointer-events-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-800" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                    d="M8 9l-3 3 3 3m8-6l3 3-3 3" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Instruction Overlay at Bottom -->
+            <div class="absolute bottom-4 inset-x-0 flex justify-center pointer-events-none z-10">
+              <span
+                class="px-3.5 py-1 text-[11px] font-semibold bg-black/50 text-white/90 backdrop-blur-md rounded-full shadow">
+                ↔ Geser untuk membandingkan
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- SECTION 5: TIME CAPSULE & DOA HARAPAN -->
+    <!-- ================================================================= -->
+    <section id="section-time-capsule" class="relative space-y-8 scroll-mt-24">
+
+      <!-- Section Header -->
+      <div class="text-center space-y-2">
+        <span
+          class="text-xs font-bold uppercase tracking-widest text-emerald-700 bg-emerald-100/70 px-3 py-1 rounded-full brutal-border">
+          Untaian Doa & Harapan
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-serif font-bold text-slate-900">
+          Harapan Terbaik untuk Langkah Mendatang
+        </h2>
+        <p class="text-sm sm:text-base text-slate-600 max-w-lg mx-auto">
+          Untaian doa dan harapan tulus yang disematkan untuk mengiringi setiap ikhtiar dan langkahmu ke depan.
+        </p>
+      </div>
+
+      <!-- Single Wide Glassmorphism Card Container -->
+      <div id="timeCapsuleGrid" class="max-w-2xl mx-auto w-full">
+        <!-- Dynamically populated via birthdayData.timeCapsuleWishes -->
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- SECTION 7: VIRTUAL STICKY NOTES WALL (PAPAN DOA INTERAKTIF) -->
+    <!-- ================================================================= -->
+    <section id="section-sticky-wall" class="relative space-y-8 scroll-mt-24">
+
+      <!-- Section Header -->
+      <div class="text-center space-y-2">
+        <span
+          class="text-xs font-bold uppercase tracking-widest text-indigo-700 bg-indigo-100/70 px-3 py-1 rounded-full brutal-border">
+          Papan Doa Interaktif
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-serif font-bold text-slate-900">
+          Virtual Sticky Notes Wall
+        </h2>
+        <p class="text-sm sm:text-base text-slate-600 max-w-lg mx-auto">
+          Tuliskan doa, pesan hangat, atau ucapan selamat ulang tahunmu. Pesan akan tertempel di dinding ini dan
+          tersimpan rapi.
+        </p>
+      </div>
+
+      <!-- Input Form Card -->
+      <div class="glass-card brutal-border rounded-3xl p-5 sm:p-7 shadow-brutal max-w-2xl mx-auto bg-white/85">
+        <form id="stickyNoteForm" class="space-y-4">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-xl">✍️</span>
+            <h3 class="font-bold text-slate-800 text-sm sm:text-base">Tinggalkan Doa & Ucapan</h3>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="authorNameInput" class="block text-xs font-bold text-slate-700 mb-1">Nama Kamu</label>
+              <input type="text" id="authorNameInput" required placeholder="Misal: Sahabat Karib / Fulan"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-white brutal-border text-sm focus:outline-none focus:ring-2 focus:ring-pink-400">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Warna Sticky Note</label>
+              <div class="flex items-center gap-2 pt-1">
+                <!-- Color radio options -->
+                <label class="cursor-pointer">
+                  <input type="radio" name="noteColor" value="yellow" checked class="peer sr-only">
+                  <span
+                    class="w-7 h-7 rounded-full bg-[#FEF08A] block border-2 border-transparent peer-checked:border-slate-800 shadow-sm transition-transform hover:scale-110"></span>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="radio" name="noteColor" value="pink" class="peer sr-only">
+                  <span
+                    class="w-7 h-7 rounded-full bg-[#FBCFE8] block border-2 border-transparent peer-checked:border-slate-800 shadow-sm transition-transform hover:scale-110"></span>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="radio" name="noteColor" value="blue" class="peer sr-only">
+                  <span
+                    class="w-7 h-7 rounded-full bg-[#BAE6FD] block border-2 border-transparent peer-checked:border-slate-800 shadow-sm transition-transform hover:scale-110"></span>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="radio" name="noteColor" value="mint" class="peer sr-only">
+                  <span
+                    class="w-7 h-7 rounded-full bg-[#BBF7D0] block border-2 border-transparent peer-checked:border-slate-800 shadow-sm transition-transform hover:scale-110"></span>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="radio" name="noteColor" value="lavender" class="peer sr-only">
+                  <span
+                    class="w-7 h-7 rounded-full bg-[#E9D5FF] block border-2 border-transparent peer-checked:border-slate-800 shadow-sm transition-transform hover:scale-110"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label for="prayerMessageInput" class="block text-xs font-bold text-slate-700 mb-1">Pesan Doa &
+              Harapan</label>
+            <textarea id="prayerMessageInput" rows="3" required placeholder="Tuliskan doa terbaikmu untuknya di sini..."
+              class="w-full px-3.5 py-2.5 rounded-xl bg-white brutal-border text-sm focus:outline-none focus:ring-2 focus:ring-pink-400"></textarea>
+          </div>
+
+          <div class="flex items-center justify-between pt-1">
+            <span class="text-xs text-slate-500">Tersimpan otomatis di browser (localStorage)</span>
+            <button type="submit"
+              class="px-5 py-2.5 rounded-full bg-slate-900 text-white font-bold text-xs sm:text-sm tracking-wide shadow-brutal brutal-border hover:bg-slate-800 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-1.5">
+              <span>📌</span>
+              <span>Sending</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- The Corkboard Wall Area -->
+      <div class="relative p-6 sm:p-10 rounded-3xl bg-amber-50/60 brutal-border shadow-inner min-h-[350px]">
+        <!-- Subtle Grid Pattern in background -->
+        <div class="absolute inset-0 opacity-15 pointer-events-none rounded-3xl"
+          style="background-image: radial-gradient(#78350f 1px, transparent 1px); background-size: 24px 24px;"></div>
+
+        <div class="relative flex items-center justify-between mb-6 pb-2 border-b border-amber-200/60">
+          <div class="flex items-center gap-2">
+            <span class="text-base">📍</span>
+            <h3 class="font-bold text-slate-800 text-sm sm:text-base">Dinding Harapan</h3>
+            <span id="stickyNoteCountBadge"
+              class="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-200 text-amber-900">0 Catatan</span>
+          </div>
+          <button id="resetStickyNotesBtn" title="Kosongkan catatan di papan"
+            class="text-xs text-slate-400 hover:text-slate-700 underline">
+            Kosongkan Papan
+          </button>
+        </div>
+
+        <!-- Sticky Notes Grid with Dynamic Tilt -->
+        <div id="stickyNotesContainer" class="relative grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+          <!-- Dynamically inserted sticky notes -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================================================================= -->
+  <!-- FOOTER -->
+  <!-- ================================================================= -->
+  <footer class="border-t border-slate-200/70 bg-white/50 backdrop-blur-sm py-10 px-4 text-center">
+    <div class="max-w-4xl mx-auto space-y-2">
+      <div class="flex items-center justify-center gap-2 text-slate-700 font-bold">
+        <span>🌸</span>
+        <span id="footerName">Nabila Auliana Sholiha</span>
+        <span>•</span>
+        <span id="footerAge">Milad Ke-23</span>
+      </div>
+      <p class="text-[11px] text-slate-400">
+        Online Birthday Gift & Celebration • Single-Page Interactive Edition
+      </p>
+    </div>
+  </footer>
+
+  <!-- ================================================================= -->
+  <!-- JAVASCRIPT LOGIC & CONFIGURATION -->
+  <!-- ================================================================= -->
+  <script>
+    /* ==========================================================================
+       1. DATA KONFIGURASI (REUSABLE BIRTHDAY DATA)
+       Semua data ucapan, nama, tanggal, URL foto berada di sini.
+       Ubah isi objek di bawah ini untuk merayakan ulang tahun orang lain!
+       ========================================================================== */
+    const birthdayData = {
+      // Data Diri
+      name: "Nabila Auliana Sholiha",
+      nickname: "NABILA",
+      age: 23, // 276 bulan = 23 tahun
+      // birthDate: "Melewati 276 Bulan Indah",
+
+      // Hero Section
+      heroGreeting: "Barakallah Fii Umrik ✨",
+      heroSubtitle: "Selamat bertambah usia yang ke-23 untuk Nabila Auliana Sholiha!",
+      heroBadgeText: "Celebrating 23 Years (276 Months) of Life & Joy ✨",
+      heroImage: "assets/foto-asli.jpg",
+
+      // Mozaik Before / After Section
+      mosaicImage: "assets/mozaik-bunga.jpg",
+
+      // Paragraf Puitis & Nasihat Panjang dengan Highlight Padanan Nama
+      poeticTitle: "Sebuah Catatan Pengingat & Doa Tulus",
+      poeticParagraph: `
+        <p><span class="text-[#E06A26] font-extrabold text-[1.25em] font-serif inline-block transition-transform hover:scale-125 duration-200">Na</span>di yang berdenyut lembut bersamaan dengan irama nafas yang terus mengisi ruang paru-paru kehidupan adalah nikmat yang besar. Bahkan kamu tahu apa<span class="text-[#E06A26] font-extrabold text-[1.25em] font-serif inline-block transition-transform hover:scale-125 duration-200">Bi</span>la sedikit saja kedua hal itu tersendat, begitu dekat jarak antara dua dimensi berbeda.</p>
+        
+        <p>Waktu itu relatif, cepat atau lambat juga bukan hal yang pasti, tapi kita yang kadang terlalu serius dan kadang juga lalai. <span class="text-[#E06A26] font-extrabold text-[1.25em] font-serif inline-block transition-transform hover:scale-125 duration-200">La</span>yaknya sepasang mata yang setia menunggu jarum jam berotasi, tetapi tidak lama bahkan lebih sering berpaling. Karena kesetiaan bisa pudar jika hanya mata yang disuruh menunggu.</p>
+        
+        <p>Hari ini, mata dan telinga yang baru terbangun, akan menjadi saksi dari <span class="text-[#E06A26] font-extrabold text-[1.25em] font-serif inline-block transition-transform hover:scale-125 duration-200">Au</span>ra baru yang kamu pancarkan. <span class="text-[#E06A26] font-extrabold text-[1.25em] font-serif inline-block transition-transform hover:scale-125 duration-200">Li</span>hatlah siapa dirimu sekarang, sosok baru yang berhasil melewati 276 bulan dengan segala ceritanya, sehingga kini, <span class="text-[#E06A26] font-extrabold text-[1.25em] font-serif inline-block transition-transform hover:scale-125 duration-200">Ana</span>k yang dulu selalu membaca buku “Bagaimana cara membahagiakan mama &amp; papa” sudah bisa menulis beberapa halaman di bukunya sendiri dengan judul “Ini caraku membahagiakan mereka”.</p>
+        
+        <p>“<span class="text-[#E06A26] font-extrabold text-[1.25em] font-serif inline-block transition-transform hover:scale-125 duration-200">S</span>e<span class="text-[#E06A26] font-extrabold text-[1.25em] font-serif inline-block transition-transform hover:scale-125 duration-200">h</span>ebat itukah <span class="text-[#E06A26] font-extrabold text-[1.25em] font-serif inline-block transition-transform hover:scale-125 duration-200">O</span>rang lain? Seenak itukah kehidupannya?”. Kita cenderung di<span class="text-[#E06A26] font-extrabold text-[1.25em] font-serif inline-block transition-transform hover:scale-125 duration-200">li</span>ngkupi rasa ingin memiliki, yang tidak memiliki alasan untuk kita mendapatkannya. <span class="text-[#E06A26] font-extrabold text-[1.25em] font-serif inline-block transition-transform hover:scale-125 duration-200">Ha</span>rapan semu memang lebih menarik, tapi percayalah bahwa sesuatu yang <strong class="font-extrabold text-slate-900">pasti</strong> tidak hanya berbentuk harapan, tapi menjadi nyata.</p>
+      `,
+
+      // Doa & Harapan (1 Kartu Utama)
+      timeCapsuleWishes: [
+        {
+          icon: "🌱",
+          title: "Keberkahan dalam hidup",
+          arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+          desc: "Semoga senantiasa ditunjukkan jalan yang benar, bisa membimbing diri sendiri dan semakin menjadi baik seperti yang diharapkan, sehat dan selamat selalu, mengalir rezeki dari jalan yang diberkahi dan mencapai masa depan yang sukses di dunia maupun akhirat.",
+          cardColor: "bg-emerald-50/80 border-emerald-200"
+        }
+      ],
+
+      // Default Sticky Notes untuk inisialisasi awal
+      initialStickyNotes: [
+      ]
+    };
+
+
+    /* ==========================================================================
+       2. INISIALISASI & POPULASI DATA KE DOM
+       ========================================================================== */
+    document.addEventListener("DOMContentLoaded", () => {
+      populateInitialData();
+      initTypingEffect();
+      initConfetti();
+      initAcrosticSection();
+      initBeforeAfterSlider();
+      initTimeCapsuleSection();
+      initStickyNotesWall();
+    });
+
+    function populateInitialData() {
+      // Navbar & Footer
+      document.getElementById("navCelebrantName").textContent = birthdayData.name;
+      document.getElementById("footerName").textContent = birthdayData.name;
+      document.getElementById("footerAge").textContent = `Milad Ke-${birthdayData.age}`;
+
+      // Hero
+      document.getElementById("heroAgeBadge").textContent = birthdayData.heroBadgeText;
+      document.getElementById("heroSubtitle").textContent = birthdayData.heroSubtitle;
+      document.getElementById("heroCelebrantNameCard").textContent = birthdayData.name;
+      document.getElementById("heroBirthDateBadge").textContent = `Spesial Milad • ${birthdayData.birthDate}`;
+      document.getElementById("heroAgeNumber").textContent = `${birthdayData.age} Tahun`;
+      document.getElementById("heroImageSrc").src = birthdayData.heroImage;
+
+      // Mozaik images
+      document.getElementById("originalImageSrc").src = birthdayData.heroImage;
+      document.getElementById("mosaicImageSrc").src = birthdayData.mosaicImage;
+
+      // Paragraf Puitis
+      const poeticCardTitleEl = document.getElementById("poeticCardTitle");
+      if (poeticCardTitleEl) poeticCardTitleEl.textContent = birthdayData.poeticTitle;
+      document.getElementById("poeticParagraphContent").innerHTML = birthdayData.poeticParagraph;
+    }
+
+
+    /* ==========================================================================
+       3. SECTION 1: HERO TYPING EFFECT & CONFETTI
+       ========================================================================== */
+    function initTypingEffect() {
+      const typingEl = document.getElementById("heroTypingText");
+      const fullText = birthdayData.heroGreeting;
+      let charIndex = 0;
+      let isDeleting = false;
+
+      function type() {
+        if (!isDeleting && charIndex <= fullText.length) {
+          typingEl.textContent = fullText.substring(0, charIndex);
+          charIndex++;
+          setTimeout(type, 110);
+        } else if (charIndex > fullText.length) {
+          // Pause at full text
+          setTimeout(() => {
+            // Keep the text steady and delightful
+            typingEl.classList.remove("typing-cursor");
+          }, 2000);
+        }
+      }
+
+      type();
+    }
+
+    function initConfetti() {
+      // Auto confetti saat halaman pertama kali selesai dimuat
+      setTimeout(() => {
+        triggerRealisticConfetti();
+      }, 600);
+
+      // Event listener tombol confetti
+      document.getElementById("heroConfettiBtn").addEventListener("click", () => {
+        triggerRealisticConfetti();
+      });
+      document.getElementById("navConfettiBtn").addEventListener("click", () => {
+        triggerRealisticConfetti();
+      });
+    }
+
+    function triggerRealisticConfetti() {
+      if (typeof confetti !== "function") return;
+
+      const count = 200;
+      const defaults = {
+        origin: { y: 0.7 },
+        colors: ['#FF69B4', '#FFD700', '#FFB6C1', '#98FB98', '#87CEFA', '#DDA0DD']
+      };
+
+      function fire(particleRatio, opts) {
+        confetti(Object.assign({}, defaults, opts, {
+          particleCount: Math.floor(count * particleRatio)
+        }));
+      }
+
+      fire(0.25, { spread: 26, startVelocity: 55 });
+      fire(0.2, { spread: 60 });
+      fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+      fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+      fire(0.1, { spread: 120, startVelocity: 45 });
+    }
+
+
+    /* ==========================================================================
+       4. SECTION 2: MAKNA NAMA & PARAGRAF PUITIS (AKROSTIK)
+       ========================================================================== */
+    function initAcrosticSection() {
+      const container = document.getElementById("acrosticLettersContainer");
+      if (!container || !birthdayData.acrostic) return;
+      container.innerHTML = "";
+
+      birthdayData.acrostic.forEach((item, index) => {
+        const letterBtn = document.createElement("button");
+        letterBtn.className = `w-14 h-16 sm:w-16 sm:h-20 rounded-2xl font-serif font-extrabold text-2xl sm:text-3xl flex flex-col items-center justify-center brutal-border transition-all duration-200 transform hover:-translate-y-1 active:translate-y-0 shadow-brutal-sm cursor-pointer ${index === 0 ? 'bg-pink-500 text-white shadow-brutal scale-105' : 'bg-white hover:bg-slate-50 text-slate-800'
+          }`;
+        letterBtn.setAttribute("data-index", index);
+        letterBtn.innerHTML = `
+          <span>${item.letter}</span>
+          <span class="text-[9px] font-sans font-bold tracking-tight opacity-75 mt-0.5 truncate max-w-[90%]">${item.title.split(' ')[0]}</span>
+        `;
+
+        letterBtn.addEventListener("click", () => {
+          showAcrosticDetail(index);
+        });
+
+        letterBtn.addEventListener("mouseenter", () => {
+          showAcrosticDetail(index);
+        });
+
+        container.appendChild(letterBtn);
+      });
+
+      // Tampilkan makna awal untuk huruf pertama
+      showAcrosticDetail(0);
+    }
+
+    function showAcrosticDetail(index) {
+      const data = birthdayData.acrostic[index];
+      if (!data) return;
+
+      const detailBox = document.getElementById("detailLetterBox");
+      const detailTitle = document.getElementById("detailLetterTitle");
+      const detailDesc = document.getElementById("detailLetterDesc");
+
+      // Update styling huruf aktif
+      const allButtons = document.querySelectorAll("#acrosticLettersContainer button");
+      allButtons.forEach((btn, idx) => {
+        if (idx === index) {
+          btn.className = `w-14 h-16 sm:w-16 sm:h-20 rounded-2xl font-serif font-extrabold text-2xl sm:text-3xl flex flex-col items-center justify-center brutal-border transition-all duration-200 transform -translate-y-1 shadow-brutal scale-105 bg-pink-500 text-white`;
+        } else {
+          btn.className = `w-14 h-16 sm:w-16 sm:h-20 rounded-2xl font-serif font-extrabold text-2xl sm:text-3xl flex flex-col items-center justify-center brutal-border transition-all duration-200 transform hover:-translate-y-1 bg-white hover:bg-slate-50 text-slate-800 shadow-brutal-sm`;
+        }
+      });
+
+      // Animasi transisi teks detail
+      detailBox.textContent = data.letter;
+      detailTitle.textContent = data.title;
+      detailDesc.textContent = data.desc;
+
+      const detailCard = document.getElementById("acrosticDetailCard");
+      detailCard.classList.add("scale-[1.01]");
+      setTimeout(() => detailCard.classList.remove("scale-[1.01]"), 200);
+    }
+
+
+    /* ==========================================================================
+       5. SECTION 3: KARYA SENI MOZAIK (BEFORE / AFTER SLIDER)
+       ========================================================================== */
+    function initBeforeAfterSlider() {
+      const slider = document.getElementById("beforeAfterSlider");
+      const beforeWrapper = document.getElementById("beforeImageWrapper");
+      const sliderHandle = document.getElementById("sliderHandle");
+
+      if (!slider || !beforeWrapper || !sliderHandle) return;
+
+      let isDragging = false;
+
+      function updateSliderPosition(clientX) {
+        const rect = slider.getBoundingClientRect();
+        let x = clientX - rect.left;
+
+        // Clamp posisi dalam 0 - 100%
+        let percent = (x / rect.width) * 100;
+        if (percent < 0) percent = 0;
+        if (percent > 100) percent = 100;
+
+        // Terapkan ke clip-path layer Sebelum dan posisi garis Handle
+        beforeWrapper.style.clipPath = `polygon(0 0, ${percent}% 0, ${percent}% 100%, 0 100%)`;
+        sliderHandle.style.left = `${percent}%`;
+      }
+
+      // Pointer events (mendukung mouse & touch secara mulus)
+      slider.addEventListener("pointerdown", (e) => {
+        isDragging = true;
+        slider.setPointerCapture(e.pointerId);
+        updateSliderPosition(e.clientX);
+      });
+
+      slider.addEventListener("pointermove", (e) => {
+        if (!isDragging) return;
+        updateSliderPosition(e.clientX);
+      });
+
+      function stopDragging(e) {
+        if (isDragging) {
+          isDragging = false;
+          try { slider.releasePointerCapture(e.pointerId); } catch (err) { }
+        }
+      }
+
+      slider.addEventListener("pointerup", stopDragging);
+      slider.addEventListener("pointercancel", stopDragging);
+
+      // Keyboard Accessibility (Tombol Panah Kiri / Kanan)
+      slider.tabIndex = 0;
+      slider.addEventListener("keydown", (e) => {
+        let currentLeft = parseFloat(sliderHandle.style.left) || 50;
+        if (e.key === "ArrowLeft") {
+          currentLeft = Math.max(0, currentLeft - 5);
+          beforeWrapper.style.clipPath = `polygon(0 0, ${currentLeft}% 0, ${currentLeft}% 100%, 0 100%)`;
+          sliderHandle.style.left = `${currentLeft}%`;
+        } else if (e.key === "ArrowRight") {
+          currentLeft = Math.min(100, currentLeft + 5);
+          beforeWrapper.style.clipPath = `polygon(0 0, ${currentLeft}% 0, ${currentLeft}% 100%, 0 100%)`;
+          sliderHandle.style.left = `${currentLeft}%`;
+        }
+      });
+    }
+
+
+    /* ==========================================================================
+       6. SECTION 5: TIME CAPSULE & DOA HARAPAN
+       ========================================================================== */
+    function initTimeCapsuleSection() {
+      const grid = document.getElementById("timeCapsuleGrid");
+      grid.innerHTML = "";
+
+      birthdayData.timeCapsuleWishes.forEach((wish, idx) => {
+        const card = document.createElement("div");
+        card.className = `glass-card brutal-border rounded-3xl p-6 sm:p-9 shadow-brutal-sm hover:shadow-brutal transition-all duration-300 flex flex-col justify-between ${wish.cardColor || 'bg-emerald-50/80 border-emerald-200'}`;
+
+        card.innerHTML = `
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="w-11 h-11 rounded-xl bg-white brutal-border flex items-center justify-center text-2xl shadow-sm">
+                ${wish.icon}
+              </span>
+              <p class="text-base text-emerald-700 font-serif font-bold tracking-wider opacity-90" dir="rtl">${wish.arabic}</p>
+            </div>
+            
+            <div>
+              <h3 class="font-bold text-slate-900 text-xl sm:text-2xl">${wish.title}</h3>
+            </div>
+            
+            <p class="text-sm sm:text-base text-slate-700 leading-relaxed pt-1">
+              ${wish.desc}
+            </p>
+          </div>
+
+          <div class="pt-5 mt-5 border-t border-emerald-200/70 flex items-center justify-center text-center">
+            <button class="hover:text-pink-600 font-semibold flex items-center gap-2 transition-colors aminkan-btn text-sm text-slate-600" data-index="${idx}">
+              <span>🤲</span>
+              <span>Aamiin yaa rabbal'aalamiin</span>
+            </button>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      // Interaksi tombol "Aamiin"
+      grid.querySelectorAll(".aminkan-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+          this.innerHTML = `<span>❤️</span> <span class="text-pink-600 font-bold">Aamiin yaa rabbal'aalamiin</span>`;
+          triggerMiniHeartConfetti(this);
+        });
+      });
+    }
+
+    function triggerMiniHeartConfetti(element) {
+      if (typeof confetti !== "function") return;
+      const rect = element.getBoundingClientRect();
+      confetti({
+        particleCount: 15,
+        spread: 45,
+        origin: {
+          x: (rect.left + rect.width / 2) / window.innerWidth,
+          y: (rect.top + rect.height / 2) / window.innerHeight
+        },
+        colors: ['#FF69B4', '#FFB6C1', '#FF1493']
+      });
+    }
+
+
+    /* ==========================================================================
+       7. SECTION 7: VIRTUAL STICKY NOTES WALL (PAPAN DOA INTERAKTIF)
+       ========================================================================== */
+    const STORAGE_KEY = "birthday_sticky_notes_v2";
+
+    function getStickyNotes() {
+      // Bersihkan data dummy bawaan versi lama jika ada di cache browser
+      try {
+        localStorage.removeItem("birthday_sticky_notes_v1");
+      } catch (e) { }
+
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          return JSON.parse(stored);
+        }
+      } catch (e) {
+        console.warn("Gagal membaca localStorage:", e);
+      }
+      return [...(birthdayData.initialStickyNotes || [])];
+    }
+
+    function saveStickyNotes(notes) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+      } catch (e) {
+        console.warn("Gagal menyimpan ke localStorage:", e);
+      }
+    }
+
+    function initStickyNotesWall() {
+      renderStickyNotes();
+
+      const form = document.getElementById("stickyNoteForm");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const authorInput = document.getElementById("authorNameInput");
+        const msgInput = document.getElementById("prayerMessageInput");
+        const selectedColor = document.querySelector('input[name="noteColor"]:checked')?.value || "yellow";
+
+        const author = authorInput.value.trim();
+        const message = msgInput.value.trim();
+
+        if (!author || !message) return;
+
+        // Buat sticky note baru dengan rotasi acak lembut (-3° s/d +3°)
+        const randomTilt = +((Math.random() * 6 - 3).toFixed(1));
+
+        const newNote = {
+          id: "note-" + Date.now(),
+          author: author,
+          message: message,
+          color: selectedColor,
+          date: "Baru saja",
+          likes: 1,
+          tilt: randomTilt
+        };
+
+        const currentNotes = getStickyNotes();
+        currentNotes.unshift(newNote); // Tambahkan ke depan
+        saveStickyNotes(currentNotes);
+        renderStickyNotes();
+
+        // Reset form
+        authorInput.value = "";
+        msgInput.value = "";
+
+        // Trigger celebratory confetti burst
+        triggerRealisticConfetti();
+      });
+
+      // Tombol Kosongkan Papan
+      document.getElementById("resetStickyNotesBtn").addEventListener("click", () => {
+        if (confirm("Kosongkan semua catatan doa di papan?")) {
+          saveStickyNotes([]);
+          renderStickyNotes();
+        }
+      });
+    }
+
+    function renderStickyNotes() {
+      const container = document.getElementById("stickyNotesContainer");
+      const badgeCount = document.getElementById("stickyNoteCountBadge");
+      const notes = getStickyNotes();
+
+      badgeCount.textContent = `${notes.length} Catatan`;
+      container.innerHTML = "";
+
+      if (notes.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-12 flex flex-col items-center justify-center text-center space-y-2">
+            <span class="text-3xl">💌</span>
+            <p class="font-bold text-slate-700 text-sm">Belum ada doa yang tertempel</p>
+            <p class="text-xs text-slate-500 max-w-xs">Jadilah yang pertama menuliskan doa dan harapan indah untuk Nabila melalui form di atas!</p>
+          </div>
+        `;
+        return;
+      }
+
+      const colorMap = {
+        yellow: { bg: 'bg-[#FEF9C3]', border: 'border-[#FDE047]', text: 'text-amber-950' },
+        pink: { bg: 'bg-[#FCE7F3]', border: 'border-[#FBCFE8]', text: 'text-pink-950' },
+        blue: { bg: 'bg-[#E0F2FE]', border: 'border-[#BAE6FD]', text: 'text-sky-950' },
+        mint: { bg: 'bg-[#DCFCE7]', border: 'border-[#BBF7D0]', text: 'text-emerald-950' },
+        lavender: { bg: 'bg-[#F3E8FF]', border: 'border-[#E9D5FF]', text: 'text-purple-950' },
+      };
+
+      notes.forEach((note) => {
+        const theme = colorMap[note.color] || colorMap.yellow;
+        const tiltDeg = note.tilt || 0;
+
+        const noteCard = document.createElement("div");
+        noteCard.className = `relative p-5 rounded-2xl ${theme.bg} brutal-border ${theme.border} shadow-brutal transition-all duration-300 hover:scale-105 hover:z-20 hover:shadow-brutal-lg flex flex-col justify-between`;
+        noteCard.style.transform = `rotate(${tiltDeg}deg)`;
+
+        noteCard.innerHTML = `
+          <!-- Washi Tape Aesthetic on top center -->
+          <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 w-16 h-5 washi-tape rounded-sm"></div>
+
+          <!-- Note Content -->
+          <div class="space-y-3 pt-2">
+            <p class="font-handwriting text-lg sm:text-xl ${theme.text} leading-snug">
+              "${escapeHtml(note.message)}"
+            </p>
+          </div>
+
+          <!-- Note Author & Like Reaction -->
+          <div class="pt-4 mt-2 border-t border-black/10 flex items-center justify-between text-xs">
+            <div>
+              <p class="font-bold text-slate-800">${escapeHtml(note.author)}</p>
+              <p class="text-[10px] text-slate-500">${escapeHtml(note.date || 'Hari ini')}</p>
+            </div>
+            
+            <button class="like-btn flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/70 hover:bg-white brutal-border text-slate-700 font-semibold transition-transform active:scale-90" data-id="${note.id}">
+              <span>❤️</span>
+              <span class="like-count">${note.likes || 0}</span>
+            </button>
+          </div>
+        `;
+
+        // Like button click event
+        const likeBtn = noteCard.querySelector(".like-btn");
+        likeBtn.addEventListener("click", () => {
+          handleLikeNote(note.id);
+        });
+
+        container.appendChild(noteCard);
+      });
+    }
+
+    function handleLikeNote(noteId) {
+      const notes = getStickyNotes();
+      const target = notes.find(n => n.id === noteId);
+      if (target) {
+        target.likes = (target.likes || 0) + 1;
+        saveStickyNotes(notes);
+        renderStickyNotes();
+      }
+    }
+
+    function escapeHtml(string) {
+      const div = document.createElement("div");
+      div.innerText = string;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+
+</html>
