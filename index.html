@@ -21,6 +21,10 @@
   <!-- Canvas Confetti CDN -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
+  <!-- Firebase App & Firestore Compat SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
   <!-- Tailwind Configuration -->
   <script>
     tailwind.config = {
@@ -539,7 +543,6 @@
           </div>
 
           <div class="flex items-center justify-between pt-1">
-            <span class="text-xs text-slate-500">Tersimpan otomatis di browser (localStorage)</span>
             <button type="submit"
               class="px-5 py-2.5 rounded-full bg-slate-900 text-white font-bold text-xs sm:text-sm tracking-wide shadow-brutal brutal-border hover:bg-slate-800 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-1.5">
               <span>📌</span>
@@ -562,9 +565,9 @@
             <span id="stickyNoteCountBadge"
               class="text-[8px] sm:text-xs font-bold px-1.5 sm:px-px sm:py-px py-0.5 rounded-full bg-amber-200 text-amber-900 tracking-tight">0 Catatan</span>
           </div>
-          <button id="resetStickyNotesBtn" title="Kosongkan catatan di papan"
-            class="text-[8px] sm:text-xs text-slate-600 hover:text-slate-700 underline">
-            Kosongkan Papan
+          <button id="resetStickyNotesBtn" title="Reset catatan"
+            class="text-[8px] sm:text-xs text-slate-400 hover:text-slate-600 underline opacity-40 hover:opacity-100 transition-opacity">
+            Hapus Catatan
           </button>
         </div>
 
@@ -1452,20 +1455,39 @@
 
 
     /* ==========================================================================
-       7. SECTION 7: VIRTUAL STICKY NOTES WALL (PAPAN DOA INTERAKTIF)
+       7. SECTION 7: VIRTUAL STICKY NOTES WALL (REALTIME FIREBASE FIRESTORE)
        ========================================================================== */
+    const firebaseConfig = {
+      apiKey: "AIzaSyB1Og148qTmOPEBrdaKzSu2mMr8cuxRUWk",
+      authDomain: "birthday-celebration-369cb.firebaseapp.com",
+      projectId: "birthday-celebration-369cb",
+      storageBucket: "birthday-celebration-369cb.firebasestorage.app",
+      messagingSenderId: "150232052164",
+      appId: "1:150232052164:web:4f56e7aecec6242e4c7491",
+      measurementId: "G-J30LE6L2WF"
+    };
+
+    let db = null;
+    try {
+      if (typeof firebase !== "undefined") {
+        if (!firebase.apps || firebase.apps.length === 0) {
+          firebase.initializeApp(firebaseConfig);
+        }
+        db = firebase.firestore();
+      }
+    } catch (e) {
+      console.warn("Inisialisasi Firebase gagal, menggunakan fallback local storage:", e);
+    }
+
     const STORAGE_KEY = "birthday_sticky_notes_v2";
+    let stickyNotesList = [];
 
-    function getStickyNotes() {
-      // Bersihkan data dummy bawaan versi lama jika ada di cache browser
-      try {
-        localStorage.removeItem("birthday_sticky_notes_v1");
-      } catch (e) { }
-
+    function getLocalStickyNotes() {
       try {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored) {
-          return JSON.parse(stored);
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
         }
       } catch (e) {
         console.warn("Gagal membaca localStorage:", e);
@@ -1473,74 +1495,165 @@
       return [...(birthdayData.initialStickyNotes || [])];
     }
 
-    function saveStickyNotes(notes) {
+    function saveLocalStickyNotes(notes) {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
-      } catch (e) {
-        console.warn("Gagal menyimpan ke localStorage:", e);
-      }
+      } catch (e) {}
     }
 
     function initStickyNotesWall() {
-      renderStickyNotes();
-
       const form = document.getElementById("stickyNoteForm");
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
+      const authorInput = document.getElementById("authorNameInput");
+      const msgInput = document.getElementById("prayerMessageInput");
+      const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
 
-        const authorInput = document.getElementById("authorNameInput");
-        const msgInput = document.getElementById("prayerMessageInput");
-        const selectedColor = document.querySelector('input[name="noteColor"]:checked')?.value || "yellow";
+      // Handle Form Submit
+      if (form) {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
 
-        const author = authorInput.value.trim();
-        const message = msgInput.value.trim();
+          const selectedColor = document.querySelector('input[name="noteColor"]:checked')?.value || "yellow";
+          const author = authorInput.value.trim();
+          const message = msgInput.value.trim();
 
-        if (!author || !message) return;
+          if (!author || !message) return;
 
-        // Buat sticky note baru dengan rotasi acak lembut (-3° s/d +3°)
-        const randomTilt = +((Math.random() * 6 - 3).toFixed(1));
+          const randomTilt = +((Math.random() * 6 - 3).toFixed(1));
+          const origBtnHtml = submitBtn ? submitBtn.innerHTML : "";
 
-        const newNote = {
-          id: "note-" + Date.now(),
-          author: author,
-          message: message,
-          color: selectedColor,
-          date: "Baru saja",
-          likes: 1,
-          tilt: randomTilt
-        };
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<span>⏳</span><span>Menempelkan...</span>`;
+          }
 
-        const currentNotes = getStickyNotes();
-        currentNotes.unshift(newNote); // Tambahkan ke depan
-        saveStickyNotes(currentNotes);
-        renderStickyNotes();
+          const newNoteData = {
+            author: author,
+            message: message,
+            color: selectedColor,
+            date: "Baru saja",
+            likes: 1,
+            tilt: randomTilt,
+            createdAt: db ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString()
+          };
 
-        // Reset form
-        authorInput.value = "";
-        msgInput.value = "";
+          if (db) {
+            try {
+              await db.collection("sticky_notes").add(newNoteData);
+              triggerRealisticConfetti();
+              authorInput.value = "";
+              msgInput.value = "";
+            } catch (err) {
+              console.error("Gagal menyimpan ke Firestore:", err);
+              alert("Gagal mengirim doa ke server. Periksa koneksi internet Anda.");
+            } finally {
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = origBtnHtml;
+              }
+            }
+          } else {
+            // Fallback Offline / LocalStorage
+            const localNote = { ...newNoteData, id: "note-" + Date.now() };
+            stickyNotesList.unshift(localNote);
+            saveLocalStickyNotes(stickyNotesList);
+            renderStickyNotes(stickyNotesList);
+            triggerRealisticConfetti();
+            authorInput.value = "";
+            msgInput.value = "";
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = origBtnHtml;
+            }
+          }
+        });
+      }
 
-        // Trigger celebratory confetti burst
-        triggerRealisticConfetti();
-      });
+      // Reset Papan (Khusus Admin dengan Passcode)
+      const resetBtn = document.getElementById("resetStickyNotesBtn");
+      if (resetBtn) {
+        resetBtn.addEventListener("click", async () => {
+          const pass = prompt("Hanya admin yang dapat mereset papan doa. Masukkan passcode:");
+          if (pass === "bersihkan-semua") {
+            if (db) {
+              try {
+                const snap = await db.collection("sticky_notes").get();
+                const batch = db.batch();
+                snap.docs.forEach(doc => batch.delete(doc.ref));
+                await batch.commit();
+                alert("Semua catatan di Firestore telah dibersihkan.");
+              } catch (err) {
+                console.error("Gagal reset:", err);
+              }
+            }
+            saveLocalStickyNotes([]);
+            renderStickyNotes([]);
+          } else if (pass !== null) {
+            alert("Passcode salah.");
+          }
+        });
+      }
 
-      // Tombol Kosongkan Papan
-      document.getElementById("resetStickyNotesBtn").addEventListener("click", () => {
-        if (confirm("Kosongkan semua catatan doa di papan?")) {
-          saveStickyNotes([]);
-          renderStickyNotes();
-        }
-      });
+      // Setup Realtime Listener Firestore
+      if (db) {
+        db.collection("sticky_notes")
+          .orderBy("createdAt", "desc")
+          .onSnapshot((snapshot) => {
+            stickyNotesList = snapshot.docs.map(doc => {
+              const data = doc.data();
+              let formattedDate = data.date || "Hari ini";
+              
+              if (data.createdAt && typeof data.createdAt.toDate === "function") {
+                const docDate = data.createdAt.toDate();
+                const now = new Date();
+                const diffMin = Math.floor((now - docDate) / 60000);
+                if (diffMin < 2) {
+                  formattedDate = "Baru saja";
+                } else if (diffMin < 60) {
+                  formattedDate = `${diffMin} mnt lalu`;
+                } else {
+                  formattedDate = docDate.toLocaleDateString("id-ID", {
+                    day: "numeric",
+                    month: "short"
+                  });
+                }
+              }
+
+              return {
+                id: doc.id,
+                ...data,
+                date: formattedDate
+              };
+            });
+
+            renderStickyNotes(stickyNotesList);
+          }, (err) => {
+            console.warn("Firestore onSnapshot error, fallback ke local storage:", err);
+            const statusEl = document.getElementById("syncStatusIndicator");
+            if (statusEl) {
+              statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span><span>Mode Offline</span>`;
+              statusEl.className = "text-xs text-amber-600 font-medium flex items-center gap-1.5";
+            }
+            stickyNotesList = getLocalStickyNotes();
+            renderStickyNotes(stickyNotesList);
+          });
+      } else {
+        stickyNotesList = getLocalStickyNotes();
+        renderStickyNotes(stickyNotesList);
+      }
     }
 
-    function renderStickyNotes() {
+    function renderStickyNotes(notes) {
       const container = document.getElementById("stickyNotesContainer");
       const badgeCount = document.getElementById("stickyNoteCountBadge");
-      const notes = getStickyNotes();
+      const notesToRender = notes !== undefined ? notes : stickyNotesList;
 
-      badgeCount.textContent = `${notes.length} Catatan`;
+      if (badgeCount) {
+        badgeCount.textContent = `${notesToRender.length} Catatan`;
+      }
+      if (!container) return;
       container.innerHTML = "";
 
-      if (notes.length === 0) {
+      if (notesToRender.length === 0) {
         container.innerHTML = `
           <div class="col-span-full py-12 flex flex-col items-center justify-center text-center space-y-2">
             <span class="text-3xl">💌</span>
@@ -1559,7 +1672,7 @@
         lavender: { bg: 'bg-[#F3E8FF]', border: 'border-[#E9D5FF]', text: 'text-purple-950' },
       };
 
-      notes.forEach((note) => {
+      notesToRender.forEach((note) => {
         const theme = colorMap[note.color] || colorMap.yellow;
         const tiltDeg = note.tilt || 0;
 
@@ -1573,7 +1686,7 @@
 
           <!-- Note Content -->
           <div class="space-y-3 pt-2">
-            <p class="font-handwriting text-lg sm:text-xl ${theme.text} leading-snug">
+            <p class="font-handwriting text-lg sm:text-xl ${theme.text} leading-snug break-words">
               "${escapeHtml(note.message)}"
             </p>
           </div>
@@ -1594,27 +1707,36 @@
 
         // Like button click event
         const likeBtn = noteCard.querySelector(".like-btn");
-        likeBtn.addEventListener("click", () => {
-          handleLikeNote(note.id);
-        });
+        if (likeBtn) {
+          likeBtn.addEventListener("click", () => {
+            handleLikeNote(note.id);
+          });
+        }
 
         container.appendChild(noteCard);
       });
     }
 
     function handleLikeNote(noteId) {
-      const notes = getStickyNotes();
-      const target = notes.find(n => n.id === noteId);
-      if (target) {
-        target.likes = (target.likes || 0) + 1;
-        saveStickyNotes(notes);
-        renderStickyNotes();
+      if (db) {
+        db.collection("sticky_notes").doc(noteId).update({
+          likes: firebase.firestore.FieldValue.increment(1)
+        }).catch(err => {
+          console.warn("Gagal update like di Firestore:", err);
+        });
+      } else {
+        const target = stickyNotesList.find(n => n.id === noteId);
+        if (target) {
+          target.likes = (target.likes || 0) + 1;
+          saveLocalStickyNotes(stickyNotesList);
+          renderStickyNotes(stickyNotesList);
+        }
       }
     }
 
     function escapeHtml(string) {
       const div = document.createElement("div");
-      div.innerText = string;
+      div.innerText = string || "";
       return div.innerHTML;
     }
 
